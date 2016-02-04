@@ -1,0 +1,295 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">判断下拉框中的值是否被选中</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<select class="form-control" id="selectOptions">
+				<option value="">请选择</option>
+				<option value="1">选项1</option>
+				<option value="2">选项2</option>
+				<option value="3">选项3</option>
+				<option value="4">选项4</option>
+				<option value="5">选项5</option>
+			</select>
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcSelectOptions = function(){
+ 			var _selectOptions = document.getElementById("selectOptions");
+ 			_selectOptions.onchange = function(){
+ 				if(this.value === ""){
+ 					alert("没有选中选项");
+ 				}else{
+ 					alert(this.value);
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcSelectOptions);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">动态添加下拉选项</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<select class="form-control" id="addOption">
+				<option value="">请选择</option>
+				<option value="1">选项1</option>
+				<option value="2">选项2</option>
+				<option value="3">选项3</option>
+				<option value="4">选项4</option>
+				<option value="5">选项5</option>
+			</select>
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" id="addOptions">添加</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcAddOption = function(){
+ 			var _addOptions = document.getElementById("addOptions");
+ 			var _addOption = document.getElementById("addOption");
+ 			var addOptions = function(target,options){
+ 				var _option = null;
+ 				var ol = options.length;
+ 				var i = 0;
+ 				var _v = "";
+ 				var _t = "";
+ 				for( ; i < ol ; i++){
+ 					_v = options[i].value;
+ 					_t = options[i].text;
+ 					_option = document.createElement("OPTION");
+ 					_option.value = _v;
+ 					_option.text = _t;
+ 					target.options.add(_option);
+ 				}
+ 			};
+ 			_addOptions.onclick = function(){
+ 				addOptions(_addOption,[
+ 					{
+ 						"value":"新添加的元素",
+ 						"text":"新添加的元素"
+ 					}
+ 					]);
+ 			}
+ 		};
+ 		addLoadEvent(funcAddOption);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">动态删除下框选项</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<select class="form-control" id="removeOption">
+				<option value="">请选择</option>
+				<option value="1">选项1</option>
+				<option value="2">选项2</option>
+				<option value="3">选项3</option>
+				<option value="4">选项4</option>
+				<option value="5">选项5</option>
+			</select>
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" id="removeOptions">删除</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcRemoveOption = function(){
+ 			var _removeOptions = document.getElementById("removeOptions");
+ 			var removeOptions = function(target,_options){
+ 				var ol = _options.length;
+ 				for(var i=0; i<ol ; i++){
+ 					target.options[_options[i]] && target.options.remove(_options[i]);
+ 				}
+ 			};
+ 			_removeOptions.onclick = function(){
+ 				removeOptions(document.getElementById("removeOption"),[1,2]);
+ 			}
+ 		};
+ 		addLoadEvent(funcRemoveOption);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">下拉框二级联动效果</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			省级：
+			<select class="form-control" id="provinces">
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			市级：
+			<select class="form-control" id="citys">
+			</select>
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcProvinceCity = function(){
+ 			var linkDatas = {
+ 				provinces:[
+ 					{
+ 						"code":"0",
+ 						"name":"请选择"
+ 					},
+ 					{
+ 						"code":"1",
+ 						"name":"北京"
+ 					},
+ 					{
+ 						"code":"2",
+ 						"name":"天津"
+ 					},
+ 					{
+ 						"code":"3",
+ 						"name":"河北"
+ 					}
+ 				],
+ 				citys:{
+ 					0:["请选择"],
+ 					1:["朝阳区","海淀区","东城区","西城区","房山区","其他"],
+ 					2:["天津"],
+ 					3:["沧州","石家庄","秦皇岛","其他"],
+ 				}
+ 			};
+ 			function addOptions(target,options){
+ 				var _option = null;
+ 				var ol = options.length;
+ 				var _v = "";
+ 				var _t = "";
+ 				for(var i=0; i<ol ; i++){
+ 					_v = options[i].value;
+ 					_t = options[i].text;
+ 					_option = document.createElement("option");
+ 					_option.value = _v;
+ 					_option.text = _t;
+ 					target.options.add(_option);
+ 				}
+ 			}
+ 			function linkage(parents,childs){
+ 				var _linkDatas = linkDatas;
+ 				var _parents = _linkDatas.provinces;
+ 				var _childs = _linkDatas.citys;
+ 				var _initCity = _childs[0];
+ 				var _p = [];
+
+ 				for(var i in _parents){
+ 					_p.push({
+ 						"text":_parents[i].name,
+ 						"value":_parents[i].code
+ 					});
+ 				}
+
+ 				addOptions(parents,_p);
+
+ 				addOptions(childs,[{
+ 					"value":_initCity,
+ 					"text":_initCity
+ 				}]);
+
+ 				parents.onchange = function(){
+ 					var _cs = _childs[this.value];//通过省级的代码值，查询其子节点
+ 					var _childsLen = _cs.length;
+ 					var _p = [];
+ 					childs.innerHTML = "";
+ 					for(var i=0;i<_childsLen;i++){
+ 						_p.push({
+ 							"value":_cs[i],
+ 							"text":_cs[i]
+ 						});
+ 					}
+ 					addOptions(childs,_p);
+ 				}
+ 			}
+ 			linkage(document.getElementById("provinces"),document.getElementById("citys"));
+ 		};
+ 		addLoadEvent(funcProvinceCity);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">可输入的下拉框</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<select class="form-control" id="inOption">
+				<option value="">请选择</option>
+				<option value="1">选项1</option>
+				<option value="2">选项2</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="inInput">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcInOption = function(){
+ 			var _inOption = document.getElementById("inOption");
+ 			var _inInput = document.getElementById("inInput");
+ 			var addOptions = function(target,options){
+ 				var _option = null;
+ 				var ol = options.length;
+ 				var _v = "";
+ 				var _t = "";
+ 				for(var i=0; i<ol ;i++){
+ 					_v = options[i].value;
+ 					_t = options[i].text;
+ 					_option = document.createElement("OPTION");
+ 					_option.value = _v;
+ 					_option.text = _t;
+ 					target.options.add(_option);
+ 				}
+ 			};
+ 			_inInput.onkeyup = function(){
+ 				var key = event.keyCode;
+ 				var _v = _inInput.value;
+ 				if(key == 13){ //输入回车时，保存输入框到下拉框中
+ 					addOptions(_inOption,[
+	 					{
+	 						"value":_v,
+	 						"text":_v
+	 					}
+ 					]);
+ 				}
+ 			}
+ 			_inOption.onchange = function(){
+ 				_inInput.value = this.value;
+ 			}
+ 		};
+ 		addLoadEvent(funcInOption);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

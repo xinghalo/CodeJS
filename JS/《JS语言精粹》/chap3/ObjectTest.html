@@ -1,0 +1,111 @@
+<html>
+<body>
+	<script type="text/javascript">
+		var empty_object = {};
+		var stooge = {
+			"first-name":"Jerome",
+			"last-name":"Howard"
+		};
+
+		var flight = {
+			airline:"Oceanic",
+			number:815,
+			departure:{
+				IATA:"SYD",
+				time:"2004-09-22 14:55",
+				city:"Sydney"
+			},
+			arrival:{
+				IATA:"LAX",
+				time:"2004-09-23 10:42",
+				city:"Los Angeles"
+			}
+		};
+
+		console.log(stooge["first-name"]);//Jerome
+		console.log(flight.departure.IATA);//SYD
+
+		console.log(stooge["middle-name"]);//undefined
+		console.log(flight.status);//undefined
+		console.log(stooge["FIRST-NAME"]);//undefined
+
+		var middle = stooge["middle-name"] || "(none)";
+		var status = flight.status || "unknown";
+		console.log(middle);
+		console.log(status);
+
+		console.log(flight.equipment);//undefined
+		//console.log(flight.equipment.model);//throw "TypeError"
+		console.log(flight.equipment && flight.equipment.model);//undefined
+
+
+		//update
+
+		stooge["first-name"] = "Jerome";
+		stooge["middle-name"] = "Lester";
+		flight.equipment = {
+			model:"Boeing 777"
+		};
+		flight.status = "overdue";
+
+		//reference
+
+		var x = stooge;
+		x.nickname = "Curly";
+		var nick = stooge.nickname;
+		console.log(nick);//Curly
+
+		var a1={},b1={},c1={};//a,b,c diffrent {}
+		a1.name = "1";
+		console.log(b1.name);
+		var a2 = b2 = c2 = {};//a,b,c same {}
+		a2.name = "2";
+		console.log(b2.name);
+
+		//reflection
+
+		console.log(typeof flight.number);
+		console.log(typeof flight.status);
+		console.log(typeof flight.arrival);
+		console.log(typeof flight.manifest);
+
+		console.log(typeof flight.toString);
+		console.log(typeof flight.constructor);
+
+		console.log(flight.hasOwnProperty('number'));
+		console.log(flight.hasOwnProperty('constructor'));
+
+		//enumration
+		//properties not in Order
+		var name;
+		for(name in stooge){
+			if(typeof stooge[name] !== 'function'){
+				console.log(name+':'+stooge[name]);
+			}
+		}
+		//properties in order
+		var i;
+		var properties = [
+			"first-name",
+			"middle-name",
+			"last-name",
+			"profession"
+		];
+		for(i=0;i<properties.length;i++){
+			console.log(properties[i] + ':' + stooge[properties[i]]);
+		}
+
+		//delete
+		var another_flight = {
+			"number":444
+		};
+		another_flight.prototype = flight;//Error may be is here! Something Wrong!
+		console.log(another_flight.number);
+		console.log(flight.number);
+		delete another_flight.number;
+		console.log(another_flight.number);
+
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cannonball</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="./jquery/jquery.min.js"></script>
+	<script src="./bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+	<script type="text/javascript">
+	var cwidth = 600;
+	var cheight = 400;
+	var ctx;
+	var everything = [];
+	var tid;
+	var horvelocity;
+	var verticalvel1;
+	var verticalvel2;
+	var gravity = 2;
+
+	var cannonx = 10;
+	var cannony = 280;
+	var cannonlength = 100;
+	var cannonht = 20;
+	var ballrad = 10;
+	var targetx = 500;
+	var targety = 50;
+	var targetw = 85;
+	var targeth = 280;
+	var htargetx = 300;
+	var htargety = 220;
+	var htargetw = 96;
+	var htargeth = 96;
+
+	function Ball(sx,sy,rad,stylestring){
+		this.sx = sx;
+		this.sy = sy;
+		this.rad = rad;
+		this.draw = drawball;
+		this.moveit = moveball;
+		this.fillstyle = stylestring;
+	}
+
+	function Myrectangle(sx,sy,swidth,sheight,stylestring){
+		this.sx = sx;
+		this.sy = sy;
+		this.swidth = swidth;
+		this.sheight = sheight;
+		this.fillstyle = stylestring;
+		this.draw = drawrects;
+		this.moveit = moveball;
+	}
+
+	function Picture(sx,sy,swidth,sheight,filen){
+		var imga = new Image();
+		imga.src = filen;
+		this.sx = sx;
+		this.sy = sy;
+		this.img = imga;
+		this.swidth = swidth;
+		this.sheight = sheight;
+		this.draw = drawAnImage;
+		this.moveit = moveball;
+	}
+
+	function drawAnImage(){
+		ctx.drawImage(this.img,this.sx,this.sy,this.swidth,this.sheight);
+	}
+
+	function drawball(){
+		ctx.fillStyle = this.fillstyle;
+		ctx.beginPath();
+		ctx.arc(this.sx,this.sy,this.rad,0,Math.PI*2,true);
+		ctx.fill();
+	}
+
+	function moveball(dx,dy){
+		this.sx += dx;
+		this.sy += dy;
+	}
+
+	function drawrects(){
+		ctx.fillStyle = this.fillstyle;
+		ctx.fillRect(this.sx,this.sy,this.swidth,this.sheight);
+	}
+
+
+	var target = new Myrectangle(300,100,80,200,"rgb(0,5,90");
+	var htarget = new Picture(htargetx,htargety,htargetw,htargeth,"./images/bird.jpg");
+	var ground = new Myrectangle(0,300,600,30,"rgb(10,250,0");
+	var connon = new Myrectangle(cannonx,cannony,cannonlength,cannonht,"rgb(40,40,0)");
+	var cball = new Ball(cannonx+cannonlength,cannony+cannonht*0.5,ballrad,"rgb(250,0,0)");
+
+	var targetindex = everything.length;
+	everything.push([target,false]);
+	everything.push([ground,false]);
+	var ballindex = everything.length;
+	everything.push([cball,false]);
+	var cannonindex = everything.length;
+	everything.push([connon,true,0,cannonx,cannony+cannonht*0.5]);
+
+	function init(){
+		ctx = document.getElementById('canvas').getContext('2d');
+		drawall();
+	}
+
+	function drawall(){
+		ctx.clearRect(0,0,cwidth,cheight);
+		var i;
+		for(i=0;i<everything.length;i++){
+			var ob = everything[i];
+			if(ob[1]){
+				ctx.save();
+				ctx.translate(ob[3],ob[4]);
+				ctx.rotate(ob[2]);
+				ctx.translate(-ob[3],-ob[4]);
+				ob[0].draw();
+				ctx.restore();
+			}else{
+				ob[0].draw();
+			}
+		}
+	}
+
+	function fire(){
+		var angle = Number(document.f.ang.value);
+		var outofcannon = Number(document.f.vo.value);
+		var angleradians = angle*Math.PI/180;
+		horvelocity = outofcannon*Math.cos(angleradians);
+		verticalvel1 = -outofcannon*Math.sin(angleradians);
+		everything[cannonindex][2] = -angleradians;
+		cball.sx = cannonx+cannonlength*Math.cos(angleradians);
+		cball.sy = cannony+cannonht*0.5 - cannonlength*Math.sin(angleradians);
+		drawall();
+		tid = setInterval(change,100);
+		return false;
+	}
+
+	function change(){
+		var dx = horvelocity;
+		verticalvel2 = verticalvel1 + gravity;
+		var dy = (verticalvel1 + verticalvel2)*0.5;
+		verticalvel1 = verticalvel2;
+		cball.moveit(dx,dy);
+		var bx = cball.sx;
+		var by = cball.sy;
+		if((bx>=target.sx) && 
+		   (bx<=(target.sx+target.swidth)) &&
+		   (by>=target.sy) &&
+		   (by<=(target.sy+target.sheight))){
+			clearInterval(tid);
+			everything.splice(targetindex,1,[htarget,false]);//replace target
+			everything.splice(ballindex,1);//delete ball
+			drawall();
+		}
+		if(by>=ground.sy){
+			clearInterval(tid);
+		}
+		drawall();
+	}
+	</script>
+</head>
+<body onLoad="init();">
+<canvas id="canvas" width="600" height="400"></canvas>
+
+<form name="f" id="f" onSubmit="return fire();">
+	Velocity out of cannon:<input name="vo" id="vo" value="10" type="number" min="-100" max="100"/>
+	<br>
+	Angle:<input name="ang" id="ang" value="0" type="number" min="0" max="80"/>
+	<br>
+	<input type="submit" value="FIRE"/>
+
+</form>
+
+</body>
+</html>

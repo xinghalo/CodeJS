@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">修改浏览器的主题</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="titleNewline" data-title="修改浏览器的title">修改主题</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTitleNewline = function(){
+ 			document.getElementById("titleNewline").onclick = function(){
+ 				document.title = this.getAttribute("data-title");
+ 			}
+ 		};
+ 		addLoadEvent(funcTitleNewline);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">打开链接时弹出确认框</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<a id="linkConfirmation" data-msg="您真的要打开吗？" data-target="http://www.baidu.com" href="javascript:void(0)">baidu</a>
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		//href="javascript:void(0)"可以阻止默认的链接跳转
+ 		var funcLinkConfirmation = function(){
+ 			document.getElementById("linkConfirmation").onclick = function(){
+ 				if(window.confirm(this.getAttribute("data-msg"))){
+ 					window.open(this.getAttribute("data-target"));
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcLinkConfirmation);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">删除时弹出确认对话框</p>
+	<div id="deleteElement" style="height:100px;background-color:#ccc">将要被删除的元素.....</div>
+	<br>
+	<button type="button" class="btn btn-primary col-md-1" id="deleteConfirmation" data-msg="警告，真的要删除吗？">删除</button>
+	<br>
+	<script type="text/javascript">
+ 		var funcDeleteElement = function(){
+ 			document.getElementById("deleteConfirmation").onclick = function(){
+ 				if(document.getElementById("deleteElement")){
+ 					if(window.confirm(this.getAttribute("data-msg"))){
+ 						document.body.removeChild(document.getElementById("deleteElement"));
+ 						alert("删除成功！");
+ 					}
+ 				}else{
+ 					alert("已删除！");
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcDeleteElement);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

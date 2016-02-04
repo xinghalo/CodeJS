@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+	#test>span{
+		background-color: blue;
+	}
+	
+	h2 + p {
+		background-color: red;
+	}
+
+	acronym[title]{
+		background-color: yellow;
+	}
+
+	acronym[title]:hover, acronym[title]:focus{
+		cursor: help;
+	}
+
+	div#test_id {
+		background-color: green;
+	}
+	div.test_class {
+		background-color: red;
+	}
+	</style>
+</head>
+<body>
+	<div>
+		div1
+		<span>
+			span1
+			<div>
+				div3
+			</div>
+			<span>
+				span2
+			</span>
+		</span>
+		<div id="test">
+			div2
+			<span>
+				span3
+			</span>
+		</div>
+	</div>
+
+	<div>
+		<h2>test</h2>
+		<p>This is test1</p>
+		<p>This is test2</p>
+	</div>
+
+	<div id="test_attr">
+		<p>This is <acronym title="This is acronym">attr</acronym> select</p>
+	</div>
+
+	<div id="test_id" class="test_class">
+		test id class
+	</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<html>
+<body>
+	<script type="text/javascript">
+	var Mammal = function(name){
+		this.name = name;
+	};
+	Mammal.prototype.getName = function(){
+		return this.name;
+	};
+	Mammal.prototype.says = function(){
+		return this.saying || '';
+	};
+	var myMammal = new Mammal('Herb the Mammal');
+	var name = myMammal.getName();
+	console.log(name);
+
+	//pseudoclassical
+	var Cat = function(name){
+		this.name = name;
+		this.saying = 'meow';
+	};
+	Cat.prototype = new Mammal();
+	Cat.prototype.purr = function(n){
+		var i,s = '';
+		for(i=0;i<n;i++){
+			if(s){
+				s+='-';
+			};
+			s+='r';
+		}
+		return s;
+	};
+	Cat.prototype.getName = function(){
+		return this.says()+' '+this.name+' '+this.says();
+	};
+	var myCat = new Cat('Henrietta');
+	var says = myCat.says();
+	var purr = myCat.purr(5);
+	var name = myCat.getName();
+	console.log(says);
+	console.log(purr);
+	console.log(name);
+
+	//inherits
+	Function.prototype.method = function(name,func){
+/*		if(!this.prototype[name]){
+			this.prototype[name] = func;
+		}*/
+		this.prototype[name] = func;
+		return this;
+	}
+	Function.method('inherits',function(Parent){
+		this.prototype = new Parent();
+		return this;
+	});
+	var Dog = function(name){
+		this.name = name;
+		this.saying = 'wang-wang';
+	}
+	.inherits(Mammal)
+	.method('purr',function(n){
+		var i,s='';
+		for(i=0;i<n;i++){
+			if(s){
+				s+='+';
+			}
+			s+='d';
+		}
+		return s;
+	})
+	.method('getName',function(){
+		return this.says()+' '+this.name+' '+this.says()+' wangwangwangwangwang';
+	});
+	var myDog = new Dog('wangcai');
+	console.log(myDog.getName());
+	console.log(myDog.purr(5));
+	console.log(myDog.says());
+	</script>
+</body>
+</html>

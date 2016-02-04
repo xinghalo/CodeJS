@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+	<title>js抛物运动</title>
+	<meta charset="utf-8" />
+	<style type="text/css">
+		*{padding:0;margin:0;}
+		body{font-size:13px;padding:10px;}
+		p{margin:2px;}
+		.wrap{position:relative;width:1000px;height:550px;margin:0 auto;border:1px solid #ccc;margin-top:50px;}
+		#fall{width:20px;font-size:1px;height:20px;background:#000;position:absolute;top:0;left:0;}
+	</style>
+</head>
+<body>
+	<h3>模拟重力状态下的抛物运动（假使1px==1mm）</h3>
+	<p>横向初速度：<input id="Vx" type="text" value="2" />px/ms</p>
+	<p>纵向初速度：<input id="Vy" type="text" value="-2" />px/ms</p>
+	<p>重力加速度：<input id="a" type="text" value="0.0098" />px/平方ms</p>
+	<p>（如果这个加速度是一个随时间变化的值，就能达到其他非匀加速运动的效果了。）</p>
+	<p>单位时间：<input id="t" type="text" value="10" />（记录运动的时间间隔）
+		<p><input type="button" value="演示" onclick="demo(document.getElementById('Vx').value, document.getElementById('Vy').value, document.getElementById('a').value, document.getElementById('t').value)"/></p>
+		<div class="wrap">
+			<div id="fall">o</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		function demo(x,y,a,t) {
+			var f=document.getElementById('fall');
+			var Vx=parseInt(x),
+				Vy=parseInt(y),
+				g=a,
+				t=parseInt(t),
+				h=0,l=0,Sx=0,Sy=0;
+				var i=setInterval(function(){
+					if(f){
+						Sx+=Vx*t;
+						l=Sx;
+						Vy+=g*t;
+						h+=Vy*t;
+						f.style.left=l+'px';
+						f.style.top=h+'px';
+						
+						if(h>500||l>900)
+							clearInterval(i);
+					}
+				},t);
+		}
+	</script>
+	</html>

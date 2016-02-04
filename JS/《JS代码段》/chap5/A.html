@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">示例内容</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control">
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" id="previousPage">查看</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcPreviousPage = function(){
+ 			function getPreviousPage(){
+ 				// 1 在地址栏直接输入地址
+ 				// 2 在B页面右击A的连接，在新窗口中打开
+ 				// 3 在B页面右击A的连接，在新标签页中打开
+ 				// 4 鼠标拖动A的连接到地址栏中
+ 				// 5 修改window.location打开
+ 				// 6 通过window.open打开
+ 				// 7 通过单击falsh打开
+ 				// 8 后台重定向
+ 				return document.referrer;
+ 			}
+ 			document.getElementById("previousPage").onclick = function(){
+ 				alert("上一页来源"+getPreviousPage());
+ 			}
+ 		};
+ 		addLoadEvent(funcPreviousPage);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

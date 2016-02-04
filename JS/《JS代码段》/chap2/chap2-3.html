@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">限制字符串长度</p>
+	<div class="container">
+
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" maxlength="5" placeholder="不区分中英文编码占位">
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" data-length="5" id="limitLength" placeholder="（使用javascript实现）不区分中英文编码占位">
+		</div>
+	</div>
+
+	</div>
+	
+	<script type="text/javascript">
+		var funcLimitLength = function(){
+			var limitLength = document.getElementById("limitLength");
+			clearCharset = function(_this){
+				var _value = _this.value;
+				var _vLength = _value.length;
+				var dataLength = _this.getAttribute("data-length");
+				var subLen = dataLength;
+				if(_vLength > dataLength){
+					_this.value = _value.substr(0,subLen);
+				}
+			};
+			limitLength.onfocus = function(){
+				clearCharset(this);
+			}
+			limitLength.onkeyup = function(){
+				clearCharset(this);
+			}
+			limitLength.onblur = function(){
+				clearCharset(this);
+			}
+		}
+		addLoadEvent(funcLimitLength);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">（支持中英文区分）限制字符串长度</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" data-length="5" id="remainingCharacters" data-model="Ch">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var strLen = (function(){//strlLength的功能相同，但是写法巨麻烦
+			return function(_str,_model){
+				_model = _model || "Ch"; //En模式下，中文算作1字符；Ch模式下，中文为2个字符
+				var _strLen = _str.length; //获取字符串长度
+				if(_strLen == 0){
+					return 0;
+				}else{
+					var chinese = _str.match(/[\u4e00-\u9fa5]/g); //匹配中文
+					return _strLen + (chinese && _model == "Ch"?chinese.length:0); //为什么要&&？
+				}
+			}
+		})();
+		var strLength = function(_str,_model){
+			_model = _model || "Ch"; //En模式下，中文算作1字符；Ch模式下，中文为2个字符
+			var _strLen = _str.length; //获取字符串长度
+			if(_strLen == 0){
+				return 0;
+			}else{
+				var chinese = _str.match(/[\u4e00-\u9fa5]/g); //匹配中文
+				return _strLen + (chinese && _model == "Ch"?chinese.length:0); //为什么要&&？
+			}
+		}
+		var funcRemainingCharacters = function(){
+			remainingCharacters = document.getElementById("remainingCharacters");
+			var clearRemainingCharacters = function(_this){
+				var _value = _this.value;
+				var _valueLength = _value.length;
+				var dataLength = _this.getAttribute("data-length");
+				var dataModel = _this.getAttribute("data-model");
+				var subLen = dataLength;
+				if(dataModel == "Ch"){//仅当开启Ch后，才对重新计算截取的长度
+					_valueLength = strLength(_value,dataModel);
+					var vv = _value.match(/[\u4e00-\u9fa5]/g); //当输入【哈哈】时，vv是["哈","哈"]数组
+					subLen = dataLength - (!vv?0:vv.length);
+				}
+				//_valueLength代表总共的字符长度，比如哈哈哈 为 6
+				//dataLength是我们定义的限制长度，比如 5
+				//subLen是计算的截取长度，当输入家具啊
+				if(_valueLength > dataLength){
+					_this.value = _value.substr(0,subLen);
+				}
+			}
+			remainingCharacters.onfocus = function(){
+				clearRemainingCharacters(this);
+			}
+			remainingCharacters.onkeyup = function(){
+				clearRemainingCharacters(this);
+			}
+			remainingCharacters.onblur = function(){
+				clearRemainingCharacters(this);
+			}
+		}
+		addLoadEvent(funcRemainingCharacters);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

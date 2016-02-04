@@ -1,0 +1,257 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">使用JS实现打印</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="test11">打印</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var funcTest11 = function(){
+			document.getElementById("test11").onclick = function(){
+				window.print();
+			}
+		};
+		addLoadEvent(funcTest11);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">显示/隐藏dom元素</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="test12Target">
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" id="test12">隐藏</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var funcTest12 = function(){
+			var elem = document.getElementById("test12");
+			var tar = document.getElementById("test12Target");
+			elem.onclick = function(){
+				if(elem.innerText === "隐藏"){
+					tar.style.display = "none";
+					elem.innerText = "显示";
+				}else{
+					tar.style.display = "";
+					elem.innerText = "隐藏";
+				}
+			}
+		};
+		addLoadEvent(funcTest12);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">在alert中实现换行</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="test13">测试</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest13 = function(){
+ 			document.getElementById("test13").onclick = function(){
+ 				alert("test\nhaha");
+ 			}
+ 		};
+ 		addLoadEvent(funcTest13);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">实现ECMAScript 5中Object.create()函数</p>
+	<div class="container">
+	<div class="row">
+		参考:<a href="http://www.cnblogs.com/yupeng/p/3478069.html">Objcet.create</a>，暂时不理解有什么用途
+		<p style="color:red;">function clone(proto){<br>
+			function _clone(){}<br>
+			_clone.prototype = proto;<br>
+			_clone.prototype.contructor = _clone;<br>
+			return new _clone();<br>
+		}<br>
+		var me = clone(Person);
+		</p>
+	</div>
+	</div>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">理解闭包(需要好好琢磨下，还是理解的不够透彻)</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:blue;">
+		for(var i=0;i<5;i++){<br>
+			setTimeout(function(){<br>
+			console.log(i);<br>
+		},100);<br>
+		}<br>
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test15-1">结果</button><br><br>
+		<p style="color:red;">
+		for(var i=0;i<5;i++){<br>
+		    (function(e){<br>
+			    setTimeout(function(){<br>
+				    console.log(e);<br>
+				},100);<br>
+			})(i);<br>
+		}<br>
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test15-2">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest15 = function(){
+ 			//没搞明白JS中函数调用的关系
+ 			document.getElementById("test15-1").onclick = function(){
+ 				for(var i=0;i<5;i++){
+ 					setTimeout(function(){
+ 						console.log(i);
+ 					},100);
+ 				}
+ 			};
+ 			document.getElementById("test15-2").onclick = function(){
+ 				for(var i =0;i<5;i++){
+ 					(function(e){
+ 						setTimeout(function(){
+ 							console.log(e);
+ 						},100);
+ 					})(i);
+ 				}
+ 			};
+ 		};
+ 		addLoadEvent(funcTest15);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">检测Shift、Alt、Ctrl按键</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" placeholder="测试按键" id="test16">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest16 = function(){
+ 			document.getElementById("test16").onkeydown = function(e){
+ 				e = e || window.event;
+ 				console.log(e.keyCode);
+ 				console.log(e.shiftKey);//16
+ 				console.log(e.ctrlKey);//17
+ 				console.log(e.altKey);//18
+ 			}
+ 		};
+ 		addLoadEvent(funcTest16);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">获取屏幕分辨率</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="test17">获取</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest17 = function(){
+ 			document.getElementById("test17").onclick = function(){
+ 				console.log("宽"+window.screen.width+" 高"+window.screen.height);
+ 			}
+ 		};
+ 		addLoadEvent(funcTest17);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">脚本不出错的方法/p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="test18">屏蔽出错</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest18 = function(){
+ 			document.getElementById("test18").onclick = function(){
+ 				window.opener.reload();//模拟出错！
+ 			}
+ 			window.onerror = function(m,f,l){
+ 				console.log("出错了！但是直接拦截下来！");
+ 				return true;
+ 			}
+ 		};
+ 		addLoadEvent(funcTest18);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">JS处理字符于ASCII之间的转换</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red;">
+			利用"xxx".charCodeAt(0)转换成ASCII码<br>
+			利用String.fromCharCode(xxx)转换成字母
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test19">转换</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest19 = function(){
+ 			document.getElementById("test19").onclick = function(){
+ 				console.log("a".charCodeAt(0));
+ 				console.log("z".charCodeAt(0));
+ 				console.log("A".charCodeAt(0));
+ 				console.log("Z".charCodeAt(0));
+ 				console.log("0".charCodeAt(0));
+ 				console.log("9".charCodeAt(0));
+ 				console.log(String.fromCharCode(75));
+ 			}
+ 		};
+ 		addLoadEvent(funcTest19);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">访问对象的属性</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="test20">测试</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest20 = function(){
+ 			document.getElementById("test20").onclick = function(){
+ 				var demo = {name:"xingoo"};
+ 				console.log("console.log(demo.name);----------------"+demo.name);
+ 				console.log("console.log(demo['name']);-------------"+demo['name']);
+ 			}
+ 		};
+ 		addLoadEvent(funcTest20);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

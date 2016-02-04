@@ -1,0 +1,270 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">第一题</p>
+	<p style="color:red;">["1","2","3"].map(parseInt)结果是？</p>
+	<a href="http://blog.csdn.net/justjavac/article/details/19473199">详解</a><br>
+	<button type="button" class="btn btn-primary" id="question1">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question1").onclick = function(){
+ 			alert(["1","2","3"].map(parseInt));
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第二题</p>
+	<p style="color:red;">[typeof null,null instanceof Object]结果是？</p>
+	<button type="button" class="btn btn-primary" id="question2">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question2").onclick = function(){
+ 			alert([typeof null,null instanceof Object]);
+ 			alert("null是一个空的对象，但是并不是以Object为原型创建的，仅仅是一个空的引用");
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第三题</p>
+	<p style="color:red;">[[3,2,1].reduce(Math.pow),[].reduce(Math.pow)]结果是？</p>
+	<button type="button" class="btn btn-primary" id="question3">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question3").onclick = function(){
+ 			alert([3,2,1].reduce(Math.pow));
+ 			alert([2,3,1].reduce(Math.pow));
+ 			alert([2,2,2].reduce(Math.pow));
+ 			alert([2,3,2].reduce(Math.pow));
+ 			alert([2,2,2,2].reduce(Math.pow));//数组内的元素挨个次幂累计结果
+ 			alert([].reduce(Math.pow));//报错Uncaught TypeError: Reduce of empty array with no initial value
+ 			alert([[3,2,1].reduce(Math.pow),[].reduce(Math.pow)]);
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第四题</p>
+	<p style="color:red;">var val = 'smtg';console.log('value is'+(val === 'smtg')?'someting':'nothing');结果是？</p>
+	<button type="button" class="btn btn-primary" id="question4">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question4").onclick = function(){
+ 			var val = 'smtg';
+ 			alert('value is'+(val === 'smtg')?'someting':'nothing');
+ 			alert("效果类似('value is'+(val ==='smtg'))?'something':'nothing';");
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第五题</p>
+	<p style="color:red;">
+		var name = 'World!';<br>
+		(function(){<br>
+		if(typeof name === 'undefined'){<br>
+			var name = 'Jack';<br>
+			console.log('Goodbye'+name);<br>
+		}else{<br>
+			console.log('Hello'+name);<br>
+		}<br>
+		})();<br>
+		结果是？</p>
+	<button type="button" class="btn btn-primary" id="question5">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question5").onclick = function(){
+ 			var name = 'World!';
+			(function(){
+				if(typeof name === 'undefined'){
+					var name = 'Jack';
+					console.log('Goodbye'+name);
+				}else{
+					console.log('Hello'+name);
+				}
+			})();
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第六题</p>
+	<p style="color:red;">
+		var END = Math.pow(2,53);<br>
+ 			var START = END - 100;<br>
+ 			var count = 0;<br>
+ 			for( var i = START ; i<=END ; i++){<br>
+ 				count++;<br>
+ 			}<br>
+ 			alert(count);<br>
+		结果是？</p>
+	<button type="button" class="btn btn-primary" id="question6">测试(可能会死机哦！)</button>
+	<script type="text/javascript">
+ 		document.getElementById("question6").onclick = function(){
+ 			var END = Math.pow(2,53);
+ 			var START = END - 100;
+ 			// alert([END,START,Math.pow(2,63)]);//END:90071992547400992
+ 			var count = 0;
+ 			for( var i = START ; i<=END ; i++){
+ 				count++;
+ 				// console.log(count);
+ 				if(count == 200){
+ 					break;
+ 				}
+ 			}
+ 			alert(count);
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第七题</p>
+	<p style="color:red;">var ary = [0,1,2];<br>
+ 			ary[10] = 10;<br>
+ 			console.log(ary.filter(function(x){
+ 				return x === undefined;
+ 			}));<br>结果是？</p>
+	<button type="button" class="btn btn-primary" id="question7">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question7").onclick = function(){
+ 			var ary = [0,1,2];
+ 			ary[10] = 10;
+ 			console.log(ary);
+ 			console.log(ary.filter(function(x){
+ 				// console.log(x);
+ 				// console.log(x === undefined);
+ 				return x === undefined;//如果返回true,则不过滤。如果返回false，则过滤掉对应的元素。
+ 			}));
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第八题</p>
+	<p style="color:red;">var two = 0.2;<br>
+ 			var one = 0.1;<br>
+ 			var eight = 0.8;<br>
+ 			var six = 0.6;<br>
+ 			console.log([two-one==one,eigth-six==two]);<br>结果是？</p>
+	<button type="button" class="btn btn-primary" id="question8">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question8").onclick = function(){
+ 			var two = 0.2;
+ 			var one = 0.1;
+ 			var eight = 0.8;
+ 			var six = 0.6;
+ 			console.log(0.2-0.1);
+ 			console.log(0.2+0.1);
+ 			console.log([two-one==one,eight-six==two]);
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第九、十题</p>
+	<p style="color:red;">new String('A') === 'A'?<br>String('A') === 'A'?<br>结果是？</p>
+	<button type="button" class="btn btn-primary" id="question9">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question9").onclick = function(){
+ 			function showCase(value){
+ 				switch(value){
+ 					case 'A':
+ 						console.log('A');
+ 						break;
+ 					case 'B':
+ 						console.log('B');
+ 						break;
+ 					case undefined:
+ 						console.log('undefined');
+ 						break;
+ 					default:
+ 						console.log('default');
+ 						break;
+ 				}
+ 			}
+ 			showCase(new String('A'));
+ 			showCase(String('A'));
+ 			console.log(typeof new String('A'));//object
+ 			console.log(typeof String('A'));//string
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第十一题</p>
+	<p style="color:red;">结果是？</p>
+	<button type="button" class="btn btn-primary" id="question11">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question11").onclick = function(){
+ 			function isOdd(num){
+ 				return num%2 == 1;
+ 			}
+ 			function isEven(num){
+ 				return num%2 == 0;
+ 			}
+ 			function isSane(num){
+ 				return isEven(num) || isOdd(num);
+ 			}
+ 			var values = [7,4,'13',-9,Infinity];
+ 			console.log(values.map(isSane));
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第十二题</p>
+	<p style="color:red;">console.log(parseInt(3,8));<br>
+ 			console.log(parseInt(3,2));<br>
+ 			console.log(parseInt(3,0));<br>结果是？</p>
+	<button type="button" class="btn btn-primary" id="question12">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question12").onclick = function(){
+ 			console.log(parseInt(3,8));
+ 			console.log(parseInt(3,2));
+ 			console.log(parseInt(3,0));
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第十三题</p>
+	<p style="color:red;">console.log(Array.isArray(Array.prototype));<br>结果是？</p>
+	<button type="button" class="btn btn-primary" id="question13">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question13").onclick = function(){
+ 			console.log(Array.isArray(Array.prototype));
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第十四题</p>
+	<p style="color:red;">结果是？</p>
+	<button type="button" class="btn btn-primary" id="question14">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question14").onclick = function(){
+ 			var a = [0];
+ 			if([0]){
+ 				console.log(a == true);
+ 			}else{
+ 				console.log("****");
+ 			}
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第十五题</p>
+	<p style="color:red;">结果是？</p>
+	<button type="button" class="btn btn-primary" id="question15">测试</button>
+	<script type="text/javascript">
+ 		document.getElementById("question15").onclick = function(){
+ 			console.log([]==[]);//false  []相当于一个新的对象
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

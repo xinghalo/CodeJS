@@ -1,0 +1,178 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="Shortcut Icon" href="../ie.ico"><!--设置地址栏图标-->
+	<link rel="Bookmark" href="../ie.ico"><!--设置收藏夹图标-->
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">防止被人frame</p>
+	<script type="text/javascript">
+ 		var funcSelfLocation = function(){
+ 			if(top.location != this.location){ //top.location是顶层的URL
+ 				top.location = this.location;
+ 			}
+ 		};
+ 		addLoadEvent(funcSelfLocation);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">永远都带着框架</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="banScrollBar">禁止滚动条</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcBanScrollBar = function(){
+ 			document.getElementById("banScrollBar").onclick = function(){
+ 				document.onmousewheel = function(event){
+ 					event = event || window.event;
+ 					if(event && event.preventDefault()){//禁止鼠标滚轮
+ 						event.preventDefault();
+ 						event.stopPropagation();
+ 					}else{
+ 						return false;
+ 					}
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcBanScrollBar);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">禁止查看源代码</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="banViewSource">禁止源码</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcBanViewSource = function(){
+ 			document.getElementById("banViewSource").onclick = function(){
+ 				document.oncontextmenu = function(){
+ 					window.event.returnValue = false;//通过禁止右键菜单来禁用查看源码选项
+ 				};
+ 			}
+ 		};
+ 		addLoadEvent(funcBanViewSource);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">防止选取、复制、剪切</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="preventCopying">
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" id="deselect">防止选取复制</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcPreventCopying = function(){
+ 			document.getElementById("deselect").onclick = function(){
+ 				//仅IE支持selection
+ 				(window.getSelection&&window.getSelection().removeAllRanges())||(document.selection&&document.selection.empty&&document.selection.empty());
+ 			};
+ 			var preventCopying = document.getElementById("preventCopying");
+ 			preventCopying.oncopy = function(){
+ 				return false;
+ 			}
+ 			preventCopying.oncut = function(){
+ 				return false;
+ 			}
+ 			preventCopying.onselectstart = function(){
+ 				return false;
+ 			}
+ 		};
+ 		addLoadEvent(funcPreventCopying);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">添加到收藏夹</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="addFavorite">收藏</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcAddFavorite = function(){
+ 			function addFavorite(fURL,fTitle){
+ 				try{
+ 					window.external.addFavorite(fURL,fTitle);//IE
+ 				}catch(e){
+ 					try{
+ 						window.sidebar.addPanel(fTitle,fURL,"");//FF
+ 					}catch(error){
+ 						alert(error);
+ 					}
+ 				}
+ 			}
+ 			document.getElementById("addFavorite").onclick = function(){
+ 				addFavorite("http://www.baidu.com","百度123");
+ 			}
+ 		};
+ 		addLoadEvent(funcAddFavorite);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">查看网页源代码</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="viewDocumentSource">查看源码</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcViewDocumentSource = function(){
+ 			document.getElementById("viewDocumentSource").onclick = function(){
+ 				var source = window.open("child.html","","menubar=no,location=no,scrollbars=yes,resizable=yes");
+ 				if(window.XMLHttpRequest){//FF Opera
+ 					xmlHttp = new XMLHttpRequest();
+ 				}else{//IE
+ 					xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+ 				}
+ 				xmlHttp.onreadystatechange = function(){
+ 					if(xmlHttp.readyState == 4){
+ 						source.document.write("<textarea cols='400' rows='1000'>"+
+ 							xmlHttp.responseText+"</textarea>");
+ 					}
+ 				};
+ 				xmlHttp.open("GET","child.html",true);
+ 				xmlHttp.send(null);
+ 			};
+ 		};
+ 		addLoadEvent(funcViewDocumentSource);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">判断上一页的来源</p>
+	<div class="container">
+	<div class="row">
+		<a href="A.html">点击测试页面来源</a>
+	</div>
+	</div>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

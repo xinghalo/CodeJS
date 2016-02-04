@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+	function init(){
+		var ctx = document.getElementById("canvas").getContext('2d');
+		ctx.beginPath();
+		ctx.strokeStyle = "rgb(200,0,0)";
+		ctx.arc(200,200,50,0,Math.PI,true);
+		ctx.closePath();
+		ctx.fill();
+		// ctx.stroke();
+		ctx.strokeStyle = "rgb(255,0,0)";
+		ctx.lineWidth = 5;
+		ctx.stroke();
+	}
+	</script>
+</head>
+<body onLoad="init();">
+<canvas id="canvas" width="400" height="300">
+	your browser dose not work!
+</canvas>
+</body>
+</html>

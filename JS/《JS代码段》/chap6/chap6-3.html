@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">比较日期大小</p>
+	<div class="container">
+	<div class="row">
+		<p id="getDateSize1"></p>
+		<p id="getDateSize2"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcGetDateSize = function(){
+ 			function getDateDifferenceValue(date1,date2){
+ 				var d1 = new Date(date1.Y||0,(date1.M-1)||0,date1.D||1,date1.h||0,date1.m||0,date1.s||0).getTime();
+ 				var d2 = new Date(date2.Y||0,(date2.M-1)||0,date2.D||1,date2.h||0,date2.m||0,date2.s||0).getTime();
+ 				return (d1-d2)/1000;//计算时间差
+ 			}
+ 			function getDateSize(date1,date2){
+ 				return getDateDifferenceValue(date1,date2)>0?true:false;
+ 			}
+ 			document.getElementById("getDateSize1").innerHTML = "2015年3月3日 比 2015年4月20日"+(getDateSize({
+ 				"Y":"2015",
+ 				"M":"3",
+ 				"D":"3"
+ 			},{
+ 				"Y":"2015",
+ 				"M":"4",
+ 				"D":"20"
+ 			})?"大":"小");
+ 			document.getElementById("getDateSize2").innerHTML = "2015年4月21日 比 2015年4月20日"+(getDateSize({
+ 				"Y":"2015",
+ 				"M":"4",
+ 				"D":"21"
+ 			},{
+ 				"Y":"2015",
+ 				"M":"4",
+ 				"D":"20"
+ 			})?"大":"小");
+ 		};
+ 		addLoadEvent(funcGetDateSize);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">对指定的日期进行加减</p>
+	<div class="container">
+	<div class="row">
+		<p id="setXDate1"></p>
+		<p id="setXDate2"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcSetXDate = function(){
+ 			function dateFormat(){
+ 				Date.prototype.format = function(f){
+ 					var date = {
+ 						"Y":this.getFullYear(),
+ 						"M":(this.getMonth()+1),
+ 						"D":this.getDate(),
+ 						"h":this.getHours(),
+ 						"m":this.getMinutes(),
+ 						"s":this.getSeconds()
+ 					};
+ 					var d = "";
+ 					var r =false;
+ 					var reg = null;
+ 					var _d = "";
+
+ 					for(d in date){
+ 						reg = new RegExp("["+d+"]{1,}","g");
+ 						r = reg.test(f);
+ 						if(r){
+ 							_d = date[d];
+ 							f = f.replace(reg,_d<10?("0"+_d):_d);
+ 						}
+ 					}
+ 					return f;
+ 				}
+ 			}
+ 			dateFormat();
+ 			function setXDate(date,xY,xM,xD,xh,xm,xs){
+ 				xY = xY || 0;
+ 				xM = xM || 0;
+ 				xD = xD || 0;
+ 				xh = xh || 0;
+ 				xm = xm || 0;
+ 				xs = xs || 0;
+ 				if(xY){
+ 					date.setFullYear(date.getFullYear()+xY);
+ 				}
+ 				if(xM){
+ 					date.setMonth(date.getMonth()+xM);
+ 				}
+ 				if(xD){
+ 					date.setDate(date.getDate()+xD);
+ 				}
+ 				if(xh){
+ 					date.setHours(date.getHours()+xh);
+ 				}
+ 				if(xm){
+ 					date.setMinutes(date.getMinutes()+xm);
+ 				}
+ 				if(xs){
+ 					date.setSeconds(date.getSeconds()+xs);
+ 				}
+ 				return date.format("YYYY-MM-DD h:m:s");
+ 			}
+ 			document.getElementById("setXDate1").innerHTML = "获取当前日期增加7天:"+setXDate(new Date(),0,0,7);
+ 			document.getElementById("setXDate2").innerHTML = "获取当前日期增加7年:"+setXDate(new Date(),7);
+ 		};
+ 		addLoadEvent(funcSetXDate);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">将字符串转换成日期格式</p>
+	<div class="container">
+	<div class="row">
+		<p id="strDate"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcStrDate = function(){
+ 			function strDate(strDate,s1,s2){//2015-4-20 16:20:20
+ 				var d = strDate.split(" ");
+ 				var d1 = d[0];//获得年月日
+ 				var d2 = d[1];//获得时分秒
+ 				var D1 = d1.split(s1||"-");
+ 				var D2 = d2.split(s2||":");
+ 				return new Date(D1[0]||0,D1[1]||0,D1[2]||1,D2[0]||0,D2[1]||0,D2[2]||0);
+ 			}
+ 			document.getElementById("strDate").innerHTML = "2015-04-20 20:44:30 转换成日期格式:"+strDate("2015-04-20 20:44:30");
+ 		};
+ 		addLoadEvent(funcStrDate);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">判断是闰年还是平年</p>
+	<div class="container">
+	<div class="row">
+		<p id="getYearType1"></p>
+		<p id="getYearType2"></p>
+		<p id="getYearType3"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcGetYearType = function(){
+ 			function dateFormat(){
+ 				Date.prototype.format = function(f){
+ 					var date = {
+ 						"Y":this.getFullYear(),
+ 						"M":(this.getMonth()+1),
+ 						"D":this.getDate(),
+ 						"h":this.getHours(),
+ 						"m":this.getMinutes(),
+ 						"s":this.getSeconds()
+ 					};
+ 					var d = "";
+ 					var r =false;
+ 					var reg = null;
+ 					var _d = "";
+
+ 					for(d in date){
+ 						reg = new RegExp("["+d+"]{1,}","g");
+ 						r = reg.test(f);
+ 						if(r){
+ 							_d = date[d];
+ 							f = f.replace(reg,_d<10?("0"+_d):_d);
+ 						}
+ 					}
+ 					return f;
+ 				}
+ 			}
+ 			dateFormat();
+ 			function getMonthDays(Y,M){
+ 				return new Date(Y,M,0).getDate();
+ 			}
+ 			function getYearType(Y){
+ 				return getMonthDays(Y,2) == 28?"平年":"闰年";
+ 			}
+ 			document.getElementById("getYearType1").innerHTML = "2014年是"+getYearType(2014);
+ 			document.getElementById("getYearType2").innerHTML = "2015年是"+getYearType(2015);
+ 			document.getElementById("getYearType3").innerHTML = "2008年是"+getYearType(2008);
+ 		};
+ 		addLoadEvent(funcGetYearType);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">日期合法性验证</p>
+	<div class="container">
+	<div class="row">
+		<p id="verifyDate1"></p>
+		<p id="verifyDate2"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcVerifyDate = function(){
+ 			function verifyDate(vDate){
+ 				return /^(\d{4}-\d{2}-\d{2})\s{1}(\d{2}:\d{2}:\d{2})$/.test(vDate);
+ 			}
+ 			document.getElementById("verifyDate1").innerHTML = "2015-04-20 20:40:40"+(verifyDate("2015-04-20 20:40:40")?"正确":"错误");
+ 			document.getElementById("verifyDate2").innerHTML = "2015/04/20 20:40:40"+(verifyDate("2015/04/20 20:40:40")?"正确":"错误");
+ 		};
+ 		addLoadEvent(funcVerifyDate);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

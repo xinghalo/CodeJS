@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Cannonball</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="./jquery/jquery.min.js"></script>
+	<script src="./bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+	<script type="text/javascript">
+	var cwidth = 600;
+	var cheight = 400;
+	var ctx;
+	var everything = [];
+	var tid;
+	var horvelocity;
+	var verticalvel1;
+	var verticalvel2;
+	var gravity = 2;
+	var iballx = 20;
+	var ibally = 300;
+
+	function Ball(sx,sy,rad,stylestring){
+		this.sx = sx;
+		this.sy = sy;
+		this.rad = rad;
+		this.draw = drawball;
+		this.moveit = moveball;
+		this.fillstyle = stylestring;
+	}
+
+	function Myrectangle(sx,sy,swidth,sheight,stylestring){
+		this.sx = sx;
+		this.sy = sy;
+		this.swidth = swidth;
+		this.sheight = sheight;
+		this.fillstyle = stylestring;
+		this.draw = drawrects;
+		this.moveit = moveball;
+	}
+
+	function drawball(){
+		ctx.fillStyle = this.fillstyle;
+		ctx.beginPath();
+		ctx.arc(this.sx,this.sy,this.rad,0,Math.PI*2,true);
+		ctx.fill();
+	}
+
+	function moveball(dx,dy){
+		this.sx += dx;
+		this.sy += dy;
+	}
+
+	function drawrects(){
+		ctx.fillStyle = this.fillstyle;
+		ctx.fillRect(this.sx,this.sy,this.swidth,this.sheight);
+	}
+
+
+	var target = new Myrectangle(300,100,80,200,"rgb(0,5,90");
+	var ground = new Myrectangle(0,300,600,30,"rgb(10,250,0");
+	var cball = new Ball(iballx,ibally,10,"rgb(250,0,0)");
+
+	everything.push(target);
+	everything.push(ground);
+	everything.push(cball);
+
+	function init(){
+		ctx = document.getElementById('canvas').getContext('2d');
+		drawall();
+	}
+
+	function drawall(){
+		ctx.clearRect(0,0,cwidth,cheight);
+		var i;
+		for(i=0;i<everything.length;i++){
+			everything[i].draw();
+		}
+	}
+
+	function fire(){
+		cball.sx = iballx;
+		cball.sy = ibally;
+
+		horvelocity = Number(document.f.hv.value);
+		verticalvel1 = Number(document.f.vv.value);
+		drawall();
+		tid = setInterval(change,10);
+		return false;
+	}
+
+	function change(){
+		var dx = horvelocity;
+		verticalvel2 = verticalvel1 + gravity;
+		var dy = (verticalvel1 + verticalvel2)*0.5;
+		verticalvel1 = verticalvel2;
+		cball.moveit(dx,dy);
+		var bx = cball.sx;
+		var by = cball.sy;
+		if((bx>=target.sx) && 
+		   (bx<=(target.sx+target.swidth)) &&
+		   (by>=target.sy) &&
+		   (by<=(target.sy+target.sheight))){
+			clearInterval(tid);
+		}
+		if(by>=ground.sy){
+			clearInterval(tid);
+		}
+		drawall();
+	}
+	</script>
+</head>
+<body onLoad="init();">
+<canvas id="canvas" width="600" height="400"></canvas>
+
+<form name="f" id="f" onSubmit="return fire();">
+	Horizontal displacement:<input name="hv" id="hv" value="10" type="number" min="-100" max="100"/>
+	<br>
+	Initial vertical displacement:<input name="vv" id="vv" value="-25"/>
+	<br>
+	<input type="submit" value="FIRE"/>
+
+</form>
+
+</body>
+</html>

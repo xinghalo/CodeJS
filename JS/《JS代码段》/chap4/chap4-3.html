@@ -1,0 +1,275 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">英文字符串自动换行</p>
+	<div id="autoNewline">English string is beyond word wrap element width.</div>
+	<style type="text/css">
+		#autoNewline{
+			display: block;
+			width: 20px;
+		}
+	</style>
+	<script type="text/javascript">
+ 		var funcAutoNewLine = function(){
+ 			function setCss(_this,cssOptions){
+ 				if(!_this || _this.nodeType === 3 || _this.nodeType === 8 || !_this.style){
+ 					return false;
+ 				}
+ 				for(var cs in cssOptions){
+ 					_this.style[cs] = cssOptions[cs];
+ 				}
+ 				return _this;
+ 			}
+ 			function autoNewline(e){
+ 				var str = "";
+ 				var strContent = e.innerHTML;
+ 				var allWidth = getTextWidth(e);
+ 				var fontWidth = allWidth/strContent.length;
+ 				var rowWidth = Math.floor(e.offsetWidth/fontWidth);
+ 				while(strContent.length > rowWidth){
+ 					str += strContent.substr(0,rowWidth)+"<br>";
+ 					strContent = strContent.substr(rowWidth,strContent.length);
+ 				}
+ 				str += strContent;
+ 				e.innerHTML = str;
+ 			}
+ 			//获取文字的宽度
+ 			//思路：克隆该节点添加到body中，样式改变为auto,并计算其宽度
+ 			function getTextWidth(e){
+ 				e = e.cloneNode(true);
+ 				var textWidth = 0;
+ 				var _body = document.body;
+ 				_body.appendChild(e);
+ 				setCss(e,{
+ 					"width":"auto",
+ 					"position":"absolute",
+ 					"zIndex":-1
+ 				});
+ 				textWidth = e.offsetWidth;
+ 				_body.removeChild(e);
+ 				return textWidth;
+ 			}
+ 			autoNewline(document.getElementById("autoNewline"));
+ 		}
+ 		addLoadEvent(funcAutoNewLine);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">内容超过元素宽度显示省略号</p>
+	<div id="contentApostrophe">内容超过元素宽度显示省略号</div>
+
+	<style type="text/css">
+		#contentApostrophe{
+			white-space: nowrap;
+			display: block;
+			width: 100px;
+		}
+	</style>
+	<script type="text/javascript">
+ 		var funcContentApostrophe = function(){
+ 			function setCss(_this,cssOptions){
+ 				if(!_this || _this.nodeType === 3 || _this.nodeType === 8 || !_this.style){
+ 					return false;
+ 				}
+ 				for(var cs in cssOptions){
+ 					_this.style[cs] = cssOptions[cs];
+ 				}
+ 				return _this;
+ 			};
+ 			function getTextWidth(e){
+ 				e = e.cloneNode(true);
+ 				var textWidth = 0;
+ 				var _body = document.body;
+ 				_body.appendChild(e);
+ 				setCss(e,{
+ 					"width":"auto",
+ 					"position":"absolute",
+ 					"zIndex":-1
+ 				});
+ 				textWidth = e.offsetWidth;
+ 				_body.removeChild(e);
+ 				return textWidth;
+ 			}
+ 			function contentApostrophe(e){
+ 				var _w = e.offsetWidth;
+ 				e.style.overflow = "hidden";
+ 				while(getTextWidth(e) > _w){
+ 					e.innerHTML = e.innerHTML.substring(0,e.innerHTML.length-4);
+ 					e.innerHTML = e.innerHTML + "...";
+ 				}
+ 			}
+ 			contentApostrophe(document.getElementById("contentApostrophe"));
+ 		};
+ 		addLoadEvent(funcContentApostrophe);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">调整字体大小</p>
+	<div class="container">
+	<div class="row">
+		<p id="fontSize">字体大小展示</p>
+		<button type="button" class="btn btn-primary col-md-1" id="fontSizeBig">大字体</button>
+		<button type="button" class="btn btn-primary col-md-1" id="fontSizeMedium">中字体</button>
+		<button type="button" class="btn btn-primary col-md-1" id="fontSizeSmall">小字体</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcFontSize = function(){
+ 			var _fontSize = document.getElementById("fontSize");
+ 			var fontSize = function(e,unit){
+ 				e.style.fontSize = unit;
+ 			};
+ 			document.getElementById("fontSizeBig").onclick = function(){
+ 				fontSize(_fontSize,"16px");
+ 			};
+ 			document.getElementById("fontSizeMedium").onclick = function(){
+ 				fontSize(_fontSize,"14px");
+ 			};
+ 			document.getElementById("fontSizeSmall").onclick = function(){
+ 				fontSize(_fontSize,"12	px");
+ 			};
+ 		};
+ 		addLoadEvent(funcFontSize);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">打印机效果</p>
+	<p id="typewriterEffect"></p>
+	<p id="typewriterEffect2"></p>
+	<script type="text/javascript">
+ 		var funcTypeWriterEffect = function(){
+ 			var typewriterArr = [];
+ 			var typewritering = false;
+ 			var typewriterID = -1;
+ 			var typewriterTime = 1000;
+ 			var typewriterEffect = function(e,str,color){
+ 				typewriterArr.push({
+ 					"context":e,
+ 					"str":str,
+ 					"lening":0,
+ 					"maxLength":str.length
+ 				});
+ 				e.style.color = color || "#000000";
+ 			}
+ 			var closeTypewriter = function(){
+ 				clearTimeout(typewriterID);
+ 				typewritering = false;
+ 			}
+ 			//核心算法：就是在一定的时间，利用innerHTML打印一定数量的字符，每次循环就多打印一个字符
+ 			var typewriterUi = function(){
+ 				var l = typewriterArr.length;
+ 				var eing = null;
+ 				for(var i=0; i<l ;i++){
+ 					eing = typewriterArr[i];
+ 					eing.lening++;
+ 					if(eing.lening>eing.maxLength){
+ 						eing.lening = 0;
+ 					}
+ 					eing.context.innerHTML = eing.str.substring(0,eing.lening)+"_";
+ 				}
+ 				typewriterID = setTimeout(typewriterUi,typewriterTime);
+ 			}
+ 			var startTypewriter = function(typewriterTime){
+ 				if(!typewritering){
+ 					typewriterTime = typewriterTime || typewriterTime;
+ 					typewriterUi();
+ 				}
+ 			}
+ 			typewriterEffect(document.getElementById("typewriterEffect"),"我是打字机！展示效果1!","red");
+ 			typewriterEffect(document.getElementById("typewriterEffect2"),"另外一种效果","green");
+ 			startTypewriter(100);
+ 		};
+ 		addLoadEvent(funcTypeWriterEffect);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">文本段落的展现和折叠(animateManage不识别)</p>
+	<div class="container">
+		<div class="row" id="textOutInParent">
+			<div class="col-md-4" id="textOutIn">
+				<p>这个世界的每个角落，都有人正在奋斗！这个世界的每个角落，都有人正在奋斗！这个世界的每个角落，都有人正在奋斗！这个世界的每个角落，都有人正在奋斗！这个世界的每个角落，都有人正在奋斗！这个世界的每个角落，都有人正在奋斗！这个世界的每个角落，都有人正在奋斗！这个世界的每个角落，都有人正在奋斗！</p>
+			</div>
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" id="textOut">展开</button>
+		<button type="button" class="btn btn-primary col-md-1" id="textRoundin">收缩</button>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTextOutIn = function(){
+ 			var element = document.getElementById("textOutIn");
+ 			document.getElementById("textOut").onclick = function(){
+ 				if(element.style.height == "")
+ 					return;
+ 				new animateManage({
+ 					"context":element,
+ 					"effect":"linear",
+ 					"time":100,
+ 					"starCss":{
+ 						"height":e.style.height || 35
+ 					},
+ 					"css":{
+ 						"height":203
+ 					}
+ 				}).init();
+ 			}
+ 			document.getElementById("textRoundin").onclick = function(){
+ 				new animateManage({
+ 					"context":element,
+ 					"effect":"linear",
+ 					"time":100,
+ 					"starCss":{
+ 						"height":e.style.height || 203
+ 					},
+ 					"css":{
+ 						"height":35
+ 					}
+ 				}).init();
+ 			}
+ 		};
+ 		addLoadEvent(funcTextOutIn);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">关键字高亮</p>
+	<p id="keyWordsHighlight">我是关键字的高亮显示文本，高亮的文字有javascript,还有CSS,以及HTML5</p>
+	<script type="text/javascript">
+ 		var funcKeyWordsHighlight = function(){
+ 			function keyWordsHighlight(e,keys,color){
+ 				var i = 0;
+ 				var l = keys.length;
+ 				var k = "";
+ 				for( ; i<l ; i++){
+ 					k = keys[i];
+ 					e.innerHTML = e.innerHTML.replace(k,"<span style='color:"+(color||"#000")+"'>"+k+"</span>");
+ 				}
+ 			}
+ 			keyWordsHighlight(document.getElementById("keyWordsHighlight"),[
+ 					"javascript","CSS","HTML5"
+ 				],"red");
+ 		}
+ 		addLoadEvent(funcKeyWordsHighlight);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

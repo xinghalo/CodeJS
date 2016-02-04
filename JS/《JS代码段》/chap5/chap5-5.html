@@ -1,0 +1,247 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Page-Enter" content="RevealTrans(duration=1,Transition=12"/>
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">获取地址栏URL的参数</p>
+	<div class="container">
+	<div class="row">
+		<p id="getURLArgs"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcGetURLArgs = function(){
+ 			function getURLArgs(e){
+ 				var args = "空";
+ 				var _args = [];
+ 				// var u = window.location.href;
+ 				var u = "http://cn.bing.com/search?q=angel&go=%E6%8F%90%E4%BA%A4&qs=n&form=QBLH&pq=angel&sc=8-5&sp=-1&sk=&cvid=0dc28d2cf7554ddbb770be3406b43301";
+ 				var s = u.indexOf("?");
+ 				var i = 0;
+ 				var l = 0;
+ 				var o = null;
+ 				if(s!=-1){
+ 					args = u.substr(s+1).split("&");
+ 				}
+ 				e.innerHTML = "参数以逗号分隔:"+args;
+ 				l = args.length;
+ 				for(;i<l;i++){
+ 					if(args[i]){
+ 						o = args[i].split("=");
+ 						_args[o[0]] = o[1];
+ 					}
+ 				}
+ 				console.log(_args);
+ 				return _args;
+ 			}
+ 			getURLArgs(document.getElementById("getURLArgs"));
+ 		};
+ 		addLoadEvent(funcGetURLArgs);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">获取一个窗口的大小</p>
+	<div class="container">
+	<div class="row">
+		<p id="getWinSize"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcGetWinSize = function(){
+ 			var getWinSize =function(){
+ 				return{//Chrome FF safari opera支持innerWidth innerHeight，其他IE版本支持documentElement.offsetHeight
+ 					width:window.innerWidth || document.documentElement.offsetWidth,
+ 					height:window.innerHeight || document.documentElement.offsetHeight
+ 				};
+ 			}
+ 			var winSize = getWinSize();
+ 			document.getElementById("getWinSize").innerHTML = "高:"+winSize.height+" 宽:"+winSize.width;
+ 		};
+ 		addLoadEvent(funcGetWinSize);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">让弹出窗口总在最前面</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="popWinMaxTop">打开窗口</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcPopWinMaxTop = function(){
+ 			document.getElementById("popWinMaxTop").onclick = function(){
+ 				var self = window.open("child.html","newWindow","width=300,height=300");
+ 				self.focus();
+ 			}
+ 		};
+ 		addLoadEvent(funcPopWinMaxTop);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">屏蔽功能键shift,alt,ctrl</p>
+	
+	<script type="text/javascript">
+		var funcShieldingFunctionKeys = function(){
+			document.onkeydown = function(event){
+				event = event || window.event;
+				if(event.shiftKey || event.altKey || event.ctrlKey){
+					alert("禁止！");
+				}
+			};
+		};
+		addLoadEvent(funcShieldingFunctionKeys);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">页面慢慢变大</p>
+	<div class="container">
+	<div class="row">需要放在服务器下，不然会报跨域操作异常
+		<button type="button" class="btn btn-primary col-md-1" id="pageFillOut">慢慢变大</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcPageFillOutSize = function(){
+ 			var pageFillOutSize = {
+ 				width:100,
+ 				height:100
+ 			};
+ 			var pageFillOutWin = null;
+ 			var pageFillOutLd = -1;
+ 			var pageFillOut = function(){
+ 				pageFillOutWin = window.open("child.html","","width=100,height=100");
+ 				pageFillOutLd = setInterval(function(){
+ 					pageFillOutWin.window.resizeBy(pageFillOutSize.width,pageFillOutSize.height);
+ 					if(!pageFillOutWin.window || pageFillOutSize.width>=screen.availWidth){
+ 						clearInterval(pageFillOutLd);
+ 					}
+ 				},50);
+ 			};
+ 			document.getElementById("pageFillOut").onclick = function(){
+ 				pageFillOut();
+ 			}
+ 		};
+ 		addLoadEvent(funcPageFillOutSize);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">IE浏览器进入页面和退出特效</p>
+	<!-- <meta http-equiv="Page-Enter" content="RevealTrans(duration=1,Transition=12"/> -->
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">页面全屏</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="fullScreen">全屏</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcFullScreen = function(){
+ 			document.getElementById("fullScreen").onclick = function(){
+ 				window.moveTo(0,0);
+ 				window.resizeTo(screen.availWidth,screen.availHeight);
+ 			}
+ 		};
+ 		addLoadEvent(funcFullScreen);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">定时关闭页面</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="timeClosePage" >3秒后关闭页面</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTimeClosePage = function(){
+ 			var timeClosePageT = -1;
+ 			function timeClosePage(t){
+ 				timeClosePageT = t || -1;
+ 				if(timeClosePageT != -1){
+ 					setTimeout(function(){
+ 						window.open("","_self","");
+ 						window.close();
+ 					},timeClosePageT);
+ 				}
+ 			}
+ 			document.getElementById("timeClosePage").onclick = function(){
+ 				timeClosePage(3000);
+ 			}
+ 		};
+ 		addLoadEvent(funcTimeClosePage);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">打印指定的区域</p>
+	<div class="container">
+	<div class="row">
+	<button type="button" class="btn btn-primary" id="printAndpreview">打印</button>
+	</div>
+	</div>
+	<script type="text/javascript">
+ 		var funcPrint = function(){
+ 			document.getElementById("printAndpreview").onclick = function(){
+ 				window.print();
+ 			}
+ 		};
+ 		addLoadEvent(funcPrint);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">打印去掉页眉页脚</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="clearHeaderAndFooter">去掉页眉页脚打印</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcClearHeaderAndFooter = function(){
+ 			function clearPrintHeadFoot(){
+ 				try{
+ 					var hkey_root = "HKEY_CURRENT_USER";
+ 					var hkey_path = "\\Software\\Microsoft\\Internet Explorer\\PageSetup\\";
+ 					var hkey_ = hkey_root+hkey_path;
+ 					var ws = new ActiveXObject("WScript.Shell");
+ 					var hkey_key = "header";
+ 					ws.RegWrite(hkey_+hkey_key,"");
+ 					var hkey_key = "footer";
+ 					ws.RegWrite(hkey_+hkey_key,"");
+ 				}catch(e){
+ 					alert("浏览器不支持去除页眉页脚！");
+ 				}
+ 			}
+ 			document.getElementById(clearHeaderAndFooter).onclick = function(){
+ 				funcClearHeaderAndFooter();
+ 				window.print();
+ 			}
+ 		};
+ 		addLoadEvent(funcClearHeaderAndFooter);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

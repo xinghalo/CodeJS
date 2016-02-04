@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!-- 外部引用方式 -->
+	<script type="text/javascript" src="test/test.js"></script>
+</head>
+
+<body>
+	<!-- 内部嵌入方式 -->
+	<script type="text/javascript" charset="utf-8">
+		console.profile();
+		console.time("times");
+		
+		//type="text/javascript" text:媒介类型 javascript：子类型
+		console.log("test for js");
+
+		//console.time() --- console.timeEnd() 实现计时
+		console.timeEnd("times");
+		console.profileEnd();
+		var isIE = function(){
+			return !!window.ActiveXObject;
+		}
+		var isIE6 = function(){
+			return isIE() && !window.XMLHttpRequest;
+		}
+		var isIE7 = function(){
+			return isIE() && isIE6() && !isIE8();
+		}
+		var isIE8 = function(){
+			return isIE() && !!document.documentMode;
+		}
+	</script>
+	<!-- 此处禁用js -->
+	<noscript>
+		此处禁用js
+	</noscript>
+</body>
+</html>

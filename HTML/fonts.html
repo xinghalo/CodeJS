@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Throwing craps</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script src="./jquery/jquery.min.js"></script>
+	<script src="./bootstrap/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="./bootstrap/css/bootstrap.min.css">
+	<script type="text/javascript">
+		var ctx;
+		function init(){
+			ctx = document.getElementById('canvas').getContext('2d');
+			ctx.font = "15px Lucida Handwriting";
+			ctx.fillText("this is Lucida Handwriting",10,20);
+			ctx.font = "italic 30px HarlemNights";
+			ctx.fillText("italic HarlemNights",40,80);
+			ctx.font = "bold 40px HarlemNights";
+			ctx.fillText("HarlemNights",100,200);
+			ctx.font = "30px Accent";
+			ctx.fillText("Accent",200,300);
+		}
+	</script>
+</head>
+<body onLoad="init();">
+<canvas id="canvas" width="900" height="400">
+	your browse does not support the html5 element canvas;	
+</canvas>
+</body>
+</html>

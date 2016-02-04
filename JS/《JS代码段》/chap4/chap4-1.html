@@ -1,0 +1,274 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">单元行上的鼠标悬停提示</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<table id="tooltip" class="table table-striped">
+				<tr data-tooltip="第一行提示">
+					<td>1</td>
+					<td>2</td>
+				</tr>
+				<tr data-tooltip="第二行提示">
+					<td>3</td>
+					<td>4</td>
+				</tr>
+			</table>
+			<div id="tooltipMsg">我是提示信息</div>
+		</div>
+	</div>
+	</div>
+	<style type="text/css">
+		#tooltipMsg{
+			position: absolute;
+			border: 1px solid #ccc;
+			display: none;
+			color: #ccc;
+			font-size: 12px;
+			padding: 2px;
+			-moz-border-radius:2px;
+			-webkit-border-radius:2px;
+			border-radius: 2px;
+			z-index: 1;
+		}
+	</style>
+	<script type="text/javascript">
+ 		var funcToolTipMsg = function(){
+ 			var setCss = function(_this,cssOption){
+ 				if(!_this || _this.nodeType === 3 || _this.nodeType === 8 || !_this.style){
+ 					return;
+ 				}
+ 				for(var cs in cssOption){
+ 					_this.style[cs] = cssOption[cs];
+ 				}
+ 				return _this;
+ 			};
+ 			var _mousepos = {
+ 				"top":0,
+ 				"left":0
+ 			};
+ 			var getMousePoint = function(_e){//获取当前鼠标的位置
+ 				var _body = document.body;
+ 				var _left = 0;
+ 				var _top = 0;
+ 				if(typeof window.pageYOffset != 'undefined'){
+ 					_left = window.pageXOffset;
+ 					_top = window.pageYOffset;
+ 				}else if(typeof document.compatMode != 'undefined' && document.compatMode !='BackCompat'){
+ 					_left = document.documentElement.scrollLeft;
+ 					_top = document.documentElement.scrollTop;
+ 				}else if(typeof _body != 'undefined'){
+ 					_left = _body.scrollLeft;
+ 					_top = _body.scrollTop;
+ 				}
+ 				_left += _e.clientX;
+ 				_top += _e.clientY;
+
+ 				_mousepos.left = _left;
+ 				_mousepos.top = _top;
+
+ 				return _mousepos;
+ 			};
+ 			var tooltip = function(e,tooltipMsg){
+ 				var trE = e.rows;
+ 				var trLen = trE.length;
+ 				for(var i=0; i<trLen ; i++){//遍历表格每一行，设置onmousemove 和 onmouseout方法，设置其CSS样式
+ 					var trEi = trE[i];
+ 					var dataTooltip = trEi.getAttribute("data-tooltip");
+ 					if(dataTooltip){
+ 						trEi.onmousemove = function(event){
+ 							event = event || window.event;
+ 							var _pos = getMousePoint(event);
+ 							tooltipMsg.innerHTML = this.getAttribute("data-tooltip");
+ 							setCss(tooltipMsg,{
+ 								"left":_pos.left+"px",
+ 								"top":(_pos.top+18)+"px",
+ 								"display":"inline"
+ 							});
+ 						}
+ 						trEi.onmouseout = function(event){
+ 							setCss(tooltipMsg,{
+ 								"display":"none"
+ 							});
+ 						}
+ 					}
+ 				}
+ 			};
+ 			tooltip(document.getElementById("tooltip"),document.getElementById("tooltipMsg"));
+ 		};
+ 		addLoadEvent(funcToolTipMsg);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">表格光棒效果</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<table id="lightBar" class="table table-striped">
+				<tr>
+					<td>1</td>
+					<td>2</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>4</td>
+				</tr>
+				<tr>
+					<td>5</td>
+					<td>6</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcLightBar = function(){
+ 			var trE = document.getElementById("lightBar").rows;
+ 			var trLen = trE.length;
+ 			for(var i=0; i<trLen; i++){
+ 				var trEi = trE[i];
+ 				trEi.onmousemove = function(){
+ 					this.style.backgroundColor = "#a5e5aa";
+ 				};
+ 				trEi.onmouseout = function(){
+ 					this.style.backgroundColor = "#fff";
+ 				};
+ 			}
+ 		};
+ 		addLoadEvent(funcLightBar);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">让表单没有凹凸感</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<table id="cleanConcaveConvex" class="table table-striped">
+				<tr>
+					<td>1</td>
+					<td>2</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcCleanConcaveConvex = function(){
+ 			var cleanConcaveConvex = function(e){
+ 				e.style.border = "1 solid #000000";
+ 			}
+ 			cleanConcaveConvex(document.getElementById("cleanConcaveConvex"));
+ 		}
+ 		addLoadEvent(funcCleanConcaveConvex);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">动态插入和删除单元行</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<table id="tableAct" class="table table-striped">
+				<tr>
+					<td>1</td>
+					<td>2</td>
+				</tr>
+			</table>
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" id="deleteRow">删除第一行</button>
+		<button type="button" class="btn btn-primary col-md-1" id="addRow">新增一行</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTableAct = function(){
+ 			var trAct = function(table,num,tr){
+ 				if(!tr){//tr为空，则为删除
+ 					var _num = table.rows[num];
+ 					if(_num){
+ 						table.deleteRow(_num);//删除表格的某一行
+ 						return true;
+ 					}else{
+ 						return false;
+ 					}
+ 				}else{//tr不为空
+ 					var r = table.insertRow(num);//插入一行
+ 					var l = tr.length;
+ 					for(var i=0; i<l; i++){
+ 						r.insertCell(i).innerHTML = tr[i];//插入一列
+ 					}
+ 					return true;
+ 				}
+ 			};
+ 			var _tableAct = document.getElementById("tableAct");
+ 			document.getElementById("deleteRow").onclick = function(){
+ 				trAct(_tableAct,0);
+ 			}
+ 			document.getElementById("addRow").onclick = function(){
+ 				trAct(_tableAct,0,["新增1","新增2"]);
+ 			}
+ 		}
+ 		addLoadEvent(funcTableAct);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">表格内容的展开和折叠</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<table id="tableOutIn" class="table table-striped">
+				<tr>
+					<td>1</td>
+					<td>2</td>
+				</tr>
+			</table>
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" id="openRow">展开</button>
+		<button type="button" class="btn btn-primary col-md-1" id="inRow">收缩</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTabelOutIn = function(){
+ 			var tableOutIn = function(e,type){
+ 				if(type!="open"){
+ 					e.style.display = "none";
+ 				}else{
+ 					e.style.display = "table-row";
+ 				}
+ 			}
+ 			var _tableOutIn = document.getElementById("tableOutIn");
+ 			document.getElementById("openRow").onclick = function(){
+ 				tableOutIn(_tableOutIn.rows[0],"open");
+ 			};
+ 			document.getElementById("inRow").onclick = function(){
+ 				tableOutIn(_tableOutIn.rows[0]);
+ 			};
+ 		};
+ 		addLoadEvent(funcTabelOutIn);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

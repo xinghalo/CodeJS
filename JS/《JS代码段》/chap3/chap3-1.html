@@ -1,0 +1,307 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">示例内容</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control">
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" >模板</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">实时预览上传的图片</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<div id="previewIng"><img src="" class="img-thumbnail" id="previewImgSrc"></div>
+			<input type="file" class="form-control" id="upPreviewImg">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var funcPreView = function(){
+			var upPreviewImg = function(options){
+				var _e = options.e;
+				var preloadImg = null;
+				_e.onchange = function(){
+					var _v = this.value;
+					var _body = document.body;
+					var picReg = /(.JPEG|.jpeg|.JPG|.jpg|.GIF|.gif|.BMP|.bmp|.PNG|.png){1}/;
+					if(!picReg.test(_v)){
+						alert("请选择正确的图片格式！");
+						return false;
+					}
+					if(typeof FileReader != 'undefined'){
+						var reader = new FileReader();
+						var _file = this.files[0];
+						reader.onload = (function(file){
+							return function(){
+								options.previewImgSrc.setAttribute("src",this.result);
+								options.previewImgSrc.style.display = "block";
+							}
+						})(_file);
+						reader.onerror = function(){
+							alert("文件读取数据出错！");
+						}
+						reader.readAsDataURL(_file);
+					}else{
+						alert("不支持！");
+					}
+				}
+			}
+			upPreviewImg({
+				"e":document.getElementById("upPreviewImg"),
+				"previewImgSrc":document.getElementById("previewImgSrc")
+			});
+		};
+		addLoadEvent(funcPreView);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">鼠标移入、移出时改变图片的样式</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<img src="../angel.jpg" class="img-thumbnail" id="imgChangeStyle">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcImgChangeStyle = function(){
+ 			var imgChangeStyle = document.getElementById("imgChangeStyle");
+ 			imgChangeStyle.onmouseover = function(){
+ 				imgChangeStyle.className = "img-circle";
+ 			}
+ 			imgChangeStyle.onmouseout = function(){
+ 				imgChangeStyle.className = "img-thumbnail";
+ 			}
+ 		};
+ 		addLoadEvent(funcImgChangeStyle);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	 <p class="h3">图片放大镜效果(没有成功，待调试)</p>
+	<div class="col-md-4" id="imagesSource" data-maxImg="../angel.jpg">
+		<img src="../angel.jpg" class="minImages" id="imagesSource">
+		<div id="focusPoint" class="focusPoint"></div>
+	</div>
+	<div class="magnifier" id="magnifier">
+		<img src="../angel.jpg" class="maxImage" id="magnifierImg">
+	</div>
+	<style type="text/css">
+		.minImages{
+			width:200px;
+			position: relative;
+		}
+		.focusPoint{
+			display: none;
+			border:2px #cc outset;
+			position: absolute;
+			top: 80px;
+			z-index: 100;
+			filter:alpha(opacity=50);
+			-moz-opacity:0.5;
+			opacity: 0.5;
+			cursor: move;
+		}
+		#imagesSource{
+			width: 200px;
+			height: auto;
+		}
+		.magnifier{
+			width: 304px;
+			height: auto;
+			position: absolute;
+			display: none;
+			top: 300px;
+			overflow: hidden;
+			margin:0px auto 0px;
+		}
+		.maxImage{
+			width: 800px;
+			position: absolute;
+		}
+
+	</style>
+	<script type="text/javascript">
+ 		var funcMagnifierImg = function(){
+ 			/******************************
+				移动鼠标图片放大镜
+ 			******************************/
+ 			var isMoveFocus = false;
+ 			var focusElement = null;
+ 			var magnifierElement = null;
+ 			var magnifierWidth = 800;
+ 			var focusZindex = 100;
+ 			var magnifierScale = 0;
+ 			var magnifierZindex = 101;
+ 			var eMagnifierMages = null;
+ 			var focusArea = {
+ 				"width":50,
+ 				"heigth":50
+ 			};
+ 			var setCss = function(_this,options){
+ 				if(!_this || _this.nodeType === 3 || _this.nodeType === 8 || !_this.style){
+ 					return ;
+ 				}
+ 				for(var cs in options){
+ 					_this.style[cs] = options[cs];
+ 				}
+ 				return _this;
+ 			}
+ 			var initMagnifierMages = function(_e){//初始化图片管理器相关元素
+ 				focusElement = setCss(document.getElementById("focusPoint"),{
+ 					"z-index":focusZindex,
+ 					"width":focusArea.width,
+ 					"heigth":focusArea.heigth
+ 				});
+ 				initMagnifierPos(_e);
+ 				magnifierScale = magnifierWidth/_e.offsetWidth;//比例换算
+ 				var _img = _e.getAttribute("data-maxImg");
+ 				document.getElementById("magnifierImg").setAttribute("src",_img);
+ 			}
+ 			var mouseMagnifier = function(_e){//放大镜业务处理
+ 				this.initMagnifierMages(_e);
+ 				this.eMagnifierMages = _e;
+ 			}
+ 			var _mousepos = {
+ 				"top":0,
+ 				"left":0
+ 			};
+ 			var getMousePoint = function(_e){
+ 				var _left = 0;
+ 				var _top = 0;
+ 				if(typeof window.pageYOffset != 'undefined'){
+ 					_left = window.pageXOffset;
+ 					_top = window.pageYOffset;
+ 				}else if(typeof document.compatMode != 'undefined'){
+ 					_left = document.documentElement.scrollLeft;
+ 					_top = document.documentElement.scrollTop;
+ 				}else if(typeof document.body != 'undefined'){
+ 					_left = document.body.scrollLeft;
+ 					_top = document.body.scrollTop;
+ 				}
+ 				_left += _e.clientX;
+ 				_top += _e.clientY;
+ 				_mousepos.left = _left;
+ 				_mousepos.top = _top;
+ 				return _mousepos;
+ 			};
+ 			var pointCheck = function(_event,_e,options){
+ 				var _pos = getMousePoint(_event);
+ 				var _w = options && options.width || _e.offsetWidth;
+ 				var _h = options && options.heigth || _e.offsetHeight;
+ 				var _left = getAbsoluteLeft(_e);
+ 				var _top = getAbsoluteTop(_e);
+ 				_pos.left += options && options.left || 0;
+ 				if(_pos.left<(_left+_w) && _left<_pos.left && _pos.top>_top && _pos.top<(_top+_h)){
+ 					return true;
+ 				}
+ 				return false;
+ 			};
+ 			var bodyMagnifiermousemove = function(event){
+ 				var _event = _event || window.event;
+ 				var _e = eMagnifierMages;
+ 				if(pointCheck(_event,_e)){
+ 					isMoveFocus = true;
+ 					focusStatus();
+ 					if(!isMoveFocus) return;
+ 					focusPos(_e,_event);
+ 					magnifierPos(_e,_event);
+ 				}else{
+ 					isMoveFocus = false;
+ 					focusStatus();
+ 				}
+ 			};
+ 			var focusPos = function(_e,_event){
+ 				var _pos = getMousePoint(_event);
+ 				var _top = _pos.top - focusArea.height/2;
+ 				var _left = _pos.left - focusArea.width/2;
+ 				setCss(focusElement,{
+ 					"top":_top,
+ 					"left":_left
+ 				});
+ 			};
+ 			var focusStatus = function(){
+ 				isMoveFocus && (
+ 					setCss(focusElement,{"display":"block"}) &&
+ 					setCss(magnifierElement,{"display":"block"}))||(
+ 					setCss(focusElement,{"display":"block"}) && 
+ 					setCss(magnifierElement,{"display":"block"}));
+ 			};
+ 			var initMagnifierPos = function(_e){
+ 				magnifierElement = setCss(document.getElementById("magnifier"),{
+ 					"z-index":magnifierZindex,
+ 					"top":getAbsoluteTop(_e),
+ 					"left":getAbsoluteLeft(_e)+_e.offsetWidth+focusArea.width
+ 				});
+ 			};
+ 			var magnifierPos = function(_e,_event){
+ 				var _pos = getMousePoint(_event);
+ 				var _top = magnifierScale * (_pos.top - getAbsoluteTop(_e)-focusArea.height/2);
+ 				var _left = magnifierScale * (_pos.left - getAbsoluteLeft(_e) - focusArea.width/2);
+ 				if(_top<0 || _left<0) return ;
+ 				setCss(document.getElementById("magnifierImg"),{
+ 					"top":"-"+_top,
+ 					"left":"-"+_left
+ 				});
+ 			};
+ 			var getAbsoluteLeft = function(_e){
+ 				var _left = _e.offsetLeft;
+ 				var _current = _e.offsetParent;
+ 				while(_current !== null){
+ 					_left += _current.offsetLeft;
+ 					_current = _current.offsetParent;
+ 				}
+ 				return _left;
+ 			};
+ 			var getAbsoluteTop = function(_e){
+ 				var _top = _e.offsetTop;
+ 				var _current = _e.offsetParent;
+ 				while(_current !== null){
+ 					_top += _current.offsetTop;
+ 					_current = _current.offsetParent;
+ 				}
+ 				return _top;
+ 			};
+ 			eMagnifierMages = document.getElementById("imagesSource");
+ 			initMagnifierMages(eMagnifierMages);
+
+ 			document.getElementById("imagesSource").onmouseover = function(e){
+ 				bodyMagnifiermousemove(e);
+ 			}
+ 		};
+ 		addLoadEvent(funcMagnifierImg);
+	</script>
+	<hr>
+	<!-- **************************************************************************** --> 
+</script>
+</body>
+</html>

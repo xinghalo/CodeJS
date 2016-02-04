@@ -1,0 +1,186 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">获取短日期格式</p>
+	<div class="container">
+	<div class="row">
+		<p id="getMinDate"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcGetMinDate = function(){
+ 			//把传入的字符串中的字母替换成时间数字
+ 			function dateFormat(){
+ 				Date.prototype.format = function(f){
+ 					var date = {
+ 						"Y":this.getFullYear(),
+ 						"M":(this.getMonth()+1),
+ 						"D":this.getDate(),
+ 						"h":this.getHours(),
+ 						"m":this.getMinutes(),
+ 						"s":this.getSeconds()
+ 					};
+ 					var d = "";
+ 					var r =false;
+ 					var reg = null;
+ 					var _d = "";
+
+ 					for(d in date){
+ 						reg = new RegExp("["+d+"]{1,}","g");
+ 						r = reg.test(f);
+ 						if(r){
+ 							_d = date[d];
+ 							f = f.replace(reg,_d<10?("0"+_d):_d);
+ 						}
+ 					}
+ 					return f;
+ 				}
+ 			}
+ 			dateFormat();
+ 			function getMinDate(){
+ 				return new Date().format("YYYY-MM-DD");
+ 			}
+ 			document.getElementById("getMinDate").innerHTML = getMinDate();
+ 		};
+ 		addLoadEvent(funcGetMinDate);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">获取指定日期所在月份的天数</p>
+	<div class="container">
+	<div class="row">
+		<p id="getMonthDays1"></p>
+		<p id="getMonthDays2"></p>
+		<p id="getMonthDays3"></p>
+		<p id="getMonthDays4"></p>
+		<p id="getMonthDays5"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcGetMonthDays = function(){
+ 			function getMonthDays(Y,M){
+ 				//由于月份是从0-11，因此如果想得到是1月份最后的一天，可以通过2月份的第0天来查到！
+ 				//因此输入的M就是Y,M,0，恰好是Y年M月的最后一天，即天数
+ 				return new Date(Y,M,0).getDate();
+ 			}
+ 			document.getElementById("getMonthDays1").innerHTML = "2014-01:"+getMonthDays(2014,1);
+ 			document.getElementById("getMonthDays2").innerHTML = "2014-02:"+getMonthDays(2014,2);
+ 			document.getElementById("getMonthDays3").innerHTML = "2014-03:"+getMonthDays(2014,3);
+ 			document.getElementById("getMonthDays4").innerHTML = "2014-04:"+getMonthDays(2014,4);
+ 			document.getElementById("getMonthDays5").innerHTML = "2014-05:"+getMonthDays(2014,5);
+ 		};
+ 		addLoadEvent(funcGetMonthDays);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">获取指定日期是第几周</p>
+	<div class="container">
+	<div class="row">
+		<p id="getHowManyWeeks"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcGetHowManyWeeks = function(){
+ 			function getMonthDays(Y,M){
+ 				return new Date(Y,M,0).getDate();
+ 			}
+ 			function getHowManyWeeks(Y,M,D){
+ 				var totalDays = 0;
+ 				var i = 1;
+ 				for(;i<M;i++){
+ 					totalDays += getMonthDays(Y,M);
+ 				}
+ 				totalDays += D;
+ 				return Math.ceil(totalDays/7);//返回大于等于数字参数的最小整数(取整函数)，对数字进行上舍入
+ 			};
+ 			document.getElementById("getHowManyWeeks").innerHTML = "2015年4月20日 是 第"+getHowManyWeeks(2015,4,20)+"周";
+ 		};
+ 		addLoadEvent(funcGetHowManyWeeks);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">倒计时</p>
+	<div class="container">
+	<div class="row">
+		<p id="getCountDown"></p>
+		<p id="NationalDay"></p>
+		<p id="tomorrowDay"></p>
+	</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcGetCountDays = function(){
+ 			function getCountDown(Y,M,D,h,m,s){
+ 				Y = Y || 0;
+ 				M = M || 0;
+ 				D = D || 0;
+ 				h = h || 0;
+ 				m = m || 0;
+ 				s = s || 0;
+
+ 				var date = new Date(Y,M-1,D,h,m,s);
+ 				//转换成时间戳getTime() 然后通过相减，在进行运算得出
+ 				var times = date.getTime() - new Date().getTime();
+ 				return Math.ceil(times/(1000*60*60*24)); //返回天数
+ 			}
+ 			document.getElementById("getCountDown").innerHTML = "2015年11月11日 距离现在："+getCountDown("2015","11","11")+"天";
+ 			document.getElementById("NationalDay").innerHTML = "2015年10月1日 距离现在："+getCountDown("2015","10","1")+"天";
+ 			document.getElementById("tomorrowDay").innerHTML = "2015年4月21日 距离现在："+getCountDown("2015","4","21")+"天";
+ 		};
+ 		addLoadEvent(funcGetCountDays);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">比较两个日期相差多少秒</p>
+	<div class="container">
+	<div class="row">
+		<p id="getDateDifferenceValue"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcGetDateDifferenceValue = function(){
+ 			function getDateDifferenceValue(date1,date2){
+ 				var d1 = new Date(date1.Y||0,(date1.M-1)||0,date1.D||1,date1.h||0,date1.m||0,date1.s||0).getTime();
+ 				var d2 = new Date(date2.Y||0,(date2.M-1)||0,date2.D||1,date2.h||0,date2.m||0,date2.s||0).getTime();
+ 				return (d1-d2)/1000;//计算时间差
+ 			}
+ 			document.getElementById("getDateDifferenceValue").innerHTML = "2015年3月3日与2015年4月20日差值"+getDateDifferenceValue({
+ 				"Y":"2015",
+ 				"M":"3",
+ 				"D":"3"
+ 			},{
+ 				"Y":"2015",
+ 				"M":"4",
+ 				"D":"20"
+ 			});
+ 		};
+ 		addLoadEvent(funcGetDateDifferenceValue);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

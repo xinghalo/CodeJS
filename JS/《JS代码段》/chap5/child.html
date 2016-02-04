@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">示例内容</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="returnText">
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" id="returnV" >返回</button>
+	</div>
+	</div>
+		
+	<script type="text/javascript">
+		var funcReturn = function(){
+	 		document.getElementById("returnV").onclick = function(){
+	 			if(window.opener){
+				    // window.opener.document.getElementById("returnText").value = document.getElementById("returnText").value;
+				}else{
+				    window.returnValue = document.getElementById("returnText").value;
+				}
+				window.close();
+			}
+		};
+ 		addLoadEvent(funcReturn);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

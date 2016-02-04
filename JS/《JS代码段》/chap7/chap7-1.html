@@ -1,0 +1,249 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<div id="suspendNavigation">
+		<h2>页面悬浮</h2>
+		<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">导航1</a></div>
+		<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">导航2</a></div>
+		<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">导航3</a></div>
+	</div>
+	<br>
+	<p class="h3">页面悬浮导航</p>
+	<style type="text/css">
+		a{
+			text-decoration: none;
+		}
+		#suspendNavigation{
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			background-color: #ccc;
+			width: 100%;
+			z-index: 1000;
+		}
+		#suspendNavigation div{
+			position: relative;
+			float: left;
+			border: #cc2123 1px solid;
+			width: 19%;
+			height: 30px;
+			text-align: center;
+			line-height: 30px;
+		}
+	</style>
+	<script type="text/javascript">
+ 		var funcSuspendNavigation = function(){
+ 			var suspendNavigation = document.getElementById("suspendNavigation");
+ 			window.onscroll = function(){
+ 				suspendNavigation.style.top = (document.documentElement.scrollTop || document.body.scrollTop)+"px";
+ 			}
+ 		};
+ 		addLoadEvent(funcSuspendNavigation);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">下拉式导航菜单</p>
+	<div id="pullDownNavigation">
+		<div class="navigation navigation1" data-targetID="pullDownNavigation1">
+			<div class="nav"><a href="http://www.cnblogs.com/xing901022/" target="_blank">导航1</a></div>
+			<div class="pullDownNavigationc" id="pullDownNavigation1">
+				<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">下拉菜单1</a></div>
+				<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">下拉菜单2</a></div>
+				<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">下拉菜单3</a></div>
+				<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">下拉菜单4</a></div>
+			</div>
+		</div>
+		<div class="navigation navigation1" data-targetID="pullDownNavigation2">
+			<div class="nav"><a href="http://www.cnblogs.com/xing901022/" target="_blank">导航2</a></div>
+			<div class="pullDownNavigationc" id="pullDownNavigation2">
+				<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">下拉菜单1</a></div>
+				<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">下拉菜单2</a></div>
+				<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">下拉菜单3</a></div>
+				<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">下拉菜单4</a></div>
+			</div>
+		</div>
+		<div class="navigation navigation1" data-targetID="pullDownNavigation3">
+			<div class="nav"><a href="http://www.cnblogs.com/xing901022/" target="_blank">导航3</a></div>
+			<div class="pullDownNavigationc" id="pullDownNavigation3">
+				<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">下拉菜单1</a></div>
+				<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">下拉菜单2</a></div>
+				<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">下拉菜单3</a></div>
+				<div><a href="http://www.cnblogs.com/xing901022/" target="_blank">下拉菜单4</a></div>
+			</div>
+		</div>
+	</div>
+	<style type="text/css">
+		#pullDownNavigation .navigation{
+			position: relative;
+			float: left;
+			border: #cc2123 1px solid;
+			width: 19%;
+			height: 30px;
+			text-align: center;
+		}
+		.pullDownNavigationc{
+			position: relative;
+			float: left;
+			top: -1px;
+			overflow: hidden;
+			height: 80px;
+			text-align: center;
+			width: 99%;
+			border: 1px solid #cc2123;
+			border-top: 0px;
+			display: none;
+		}
+		.navigation .nav{
+			height: 32px;
+			line-height: 30px;
+		}
+	</style>
+	<script type="text/javascript">
+ 		var funcPullDownNavigation = function(){
+ 			var getTypeElement = function(es,type){
+ 				var esLen = es.length;
+ 				var eArr = [];
+ 				var esl = null;
+ 				for(var i=0;i<esLen;i++){
+ 					esl = es[i];
+ 					if(esl.nodeName.replace("#","").toLocaleLowerCase() == type){
+ 						eArr.push(esl);
+ 					}
+ 				}
+ 				return eArr;
+ 			};
+ 			var navs = getTypeElement(document.getElementById("pullDownNavigation").childNodes,"div");
+ 			var l = navs.length;
+ 			var targetID = null;
+ 			for(var i=0;i<l;i++){
+ 				navs[i].onmousemove = function(){
+ 					targetID = this.getAttribute("data-targetID");
+ 					document.getElementById(targetID).style.display = "block";
+ 				}
+ 				navs[i].onmouseout = function(){
+ 					document.getElementById(targetID).style.display = "none";
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcPullDownNavigation);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">定时关闭广告</p>
+	<div id="backAd">
+		单击5秒后关闭
+	</div>
+	<style type="text/css">
+	#backAd{
+		position: relative;
+		height: 100px;
+		overflow: hidden;
+		background-color: #ccc;
+	}
+	</style>
+	<script type="text/javascript">
+ 		var funcBackAd = function(){
+ 			function backAd(e){
+ 				var time = 5000;
+	 			var timeID = -1;
+	 			timeID = setInterval(function(){
+	 				if(time == 0){
+	 					e.style.display = "none";
+	 					clearInterval(timeID);
+	 				}
+	 				time -= 1000;
+	 				e.innerHTML = (time/1000)+"秒后关闭广告";
+	 			},1000);
+ 			}
+ 			document.getElementById("backAd").onclick = function(){
+ 				backAd(document.getElementById("backAd"));
+ 			}
+ 		}
+ 		addLoadEvent(funcBackAd);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">页面雪花效果(moveChar()方法没有完成)</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="startFlutterCharacter">下雪</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcStartFlutterCharacter = function(){
+ 			var isOpen = false;
+ 			function flutterChar(){
+ 				if(isOpen){
+ 					return;
+ 				}
+ 				isOpen = true;
+ 				var allChar = [];
+ 				var maxSnowflake = 90;
+ 				var maxleft = (document.body.clientWidth || document.documentElement.clientWidth)-100;
+ 				var maxTop = -1;
+ 				var i = 0;
+ 				var snowflake = ["❄","*"];
+ 				var snowflakeColor = ["red","green","ab2322"];
+ 				var s = 0;
+ 				var createCharr = function(){
+ 					var d = document.createElement("div");
+ 					s++;
+ 					s = s>2?0:s;
+ 					d.innerHTML = snowflake[s];
+ 					d.style.left = Math.round(Math.random()*maxleft+0)+"px";
+ 					d.style.top = (-1*Math.round(Math.random()*100+0))+"px";
+ 					d.style.position = "absolute";
+ 					d.style.zIndex = "999";
+ 					d.setAttribute("data-v",Math.round(Math.random()*5+2));
+ 					d.setAttribute("data-time","0");
+ 					document.body.appendChild(d);
+ 					return d;
+ 				};
+ 				var createS = setInterval(function(){
+ 					var length = allChar.length;
+ 					var l = length + 10;
+ 					for(;i<l;i++){
+ 						allChar.push(createCharr());
+ 					}
+ 					if(allChar.length > maxSnowflake){
+ 						clearInterval(createS);
+ 					}
+ 				},1000);
+ 				setInterval(function(){
+ 					var ll = allChar.length;
+ 					for(i=0;i<ll;i++){
+ 						moveChar(allChar[i]);
+ 					}
+ 				},50);
+ 			}
+ 			document.getElementById("startFlutterCharacter").onclick = function(){
+ 				this.value = "开始下雪";
+ 				flutterChar();
+ 			}
+ 		};
+ 		addLoadEvent(funcStartFlutterCharacter);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

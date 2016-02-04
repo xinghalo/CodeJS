@@ -1,0 +1,12 @@
+{
+  "name": "Leaflet.heat",
+  "homepage": "https://github.com/Leaflet/Leaflet.heat",
+  "_release": "627ede7c11",
+  "_resolution": {
+    "type": "commit",
+    "commit": "627ede7c11bbe43"
+  },
+  "_source": "git://github.com/Leaflet/Leaflet.heat.git",
+  "_target": "627ede7c11bbe43",
+  "_originalSource": "Leaflet/Leaflet.heat"
+}

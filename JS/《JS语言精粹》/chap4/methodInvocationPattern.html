@@ -1,0 +1,63 @@
+<html>
+<body>
+	<script type="text/javascript">
+			// the method invocation Pattern
+			var myObject = {
+				value:0,
+				increment:function(inc){
+					this.value += typeof inc === 'number'?inc:1;
+				} 
+			}
+			myObject.increment();
+			console.log(myObject.value);//1
+
+			myObject.increment(2);
+			console.log(myObject.value);//3
+
+			var add = function(num1,num2){
+				return num1+num2;
+			}
+
+			//the function invocation Pattern
+			myObject.double = function(){
+				var that = this;
+
+				var helper = function(){
+					console.log(this);//this is window
+					console.log(that);//that is myObject
+					that.value = add(that.value,that.value);
+				};
+
+				helper();
+			};
+
+			myObject.double();
+			console.log(myObject.value);//6
+
+			//the Constructor Invocation Pattern
+			var Quo = function(string){
+				this.status = string;
+			};
+
+			Quo.prototype.get_status = function(){
+				return this.status;
+			};
+
+			var myQuo = new Quo("confused");
+
+			console.log(myQuo.get_status());
+
+			//the Apply Invocation Pattern
+			var array = [3,4];
+			var sum = add.apply(null,array);
+			console.log(sum);
+
+			var statusObject = {
+				status:'A-OK'
+			};
+
+			var status = Quo.prototype.get_status.apply(statusObject);
+			console.log(status);
+			</script>
+		</body>
+		</html>

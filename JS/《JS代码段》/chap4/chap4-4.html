@@ -1,0 +1,428 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">字幕上下滚动(还是animateManage的问题)</p>
+	<div class="rollingSubtitles">
+		<ul id="rollingSubtitles" style="margin-top:-2px;">
+			<li>哈喽第一条</li>
+			<li>哈喽第二条</li>
+			<li>哈喽第三条</li>
+			<li>哈喽第四条</li>
+		</ul>
+	</div>
+	<button type="button" class="btn btn-primary col-md-1" id="upSubtitles">向上滚动</button>
+	<button type="button" class="btn btn-primary col-md-1" id="downSubtitles">向下滚动</button>
+	<br>
+	<style type="text/css">
+		.rollingSubtitles{
+			width: 350px;
+			height: 94px;
+			min-height: 25px;
+			line-height: 25px;
+			border: #cc 1233 1px solid;
+			overflow: hidden;
+		}
+	</style>
+	<script type="text/javascript">
+ 		var funcRollingSubtitles = function(){
+ 			//获取指定类型的节点
+ 			function getTypeElement(es,type){
+ 				var esLen = es.length;
+ 				var eArr = [];
+ 				var esl = null;
+ 				for(var i=0; i<esLen; i++){
+ 					esl = es[i];
+ 					if(esl.nodeName.replace("#","").toLocaleLowerCase() == type){
+ 						eArr.push(esl);
+ 					}
+ 				}
+ 				return eArr;
+ 			};
+ 			var llis = [];
+ 			var rollingE = null;
+ 			var rollingID = -1;
+ 			var rolling = "up";
+
+ 			//初始化滚动层的数据
+ 			function rollingSubtitles(e){
+ 				rollingE = e;
+ 				llis = getTypeElement(e.childNodes,"li");
+
+ 				e.onmouseover = function(){
+ 					clearInterval(rollingID);
+ 				}
+
+ 				e.onmouseout = function(){
+ 					if(rolling == "down"){
+ 						downSubtitles();
+ 					}else{
+ 						upSubtitles();
+ 					}
+ 				}
+
+ 				return this;
+ 			};
+ 			function upSubtitles(manualOperation){
+ 				clearInterval(rollingID);
+ 				rolling = "up";
+ 				var up = function(){
+ 					new animateManage({
+ 						"context":rollingE,
+ 						"effect":"linear",
+ 						"time":200,
+ 						"startCss":{
+ 							"marginTop":rollingE.style.marginTop || 0
+ 						},
+ 						"css":{
+ 							"marginTop":-103
+ 						},
+ 						"callback":function(){
+ 							llis = getTypeElement(rollingE.childNodes,"li");
+ 							rollingE.style.marginTop = "0px";
+		 					var cloneE = null;
+		 					for(var i=0; i<4;i++){
+		 						cloneE = llis[i].cloneNode(true);
+		 						rollingE.removeChild(llis[i]);
+		 						rollingE.appendChild(cloneE);
+		 					}
+ 						}
+ 					}).init();
+ 				};
+ 				if(manualOperation){
+ 					up();
+ 				}
+ 				rollingID = setInterval(function(){up();},3000);
+ 			};
+ 			function downSubtitles(manualOperation){
+ 				clearInterval(rollingID);
+ 				rolling = "down";
+ 				var down = function(){
+ 					llis = getTypeElement(rollingE.childNodes,"li");
+ 					var len = llis.length -1;
+ 					var l = len-4;
+ 					var cloneE = null;
+
+ 					for(var i=len; i>l;i--){
+ 						llis = getTypeElement(rollingE.childNodes,"li");
+ 						cloneE = llis[len].cloneNode(true);
+ 						rollingE.removeChild(llis[len]);
+ 						rollingE.insertBefore(cloneE,llis[0]);
+ 					}
+
+ 					rollingE.style.marginTop = "-103px";
+
+ 					new animateManage({
+ 						"context":rollingE,
+ 						"effect":"linear",
+ 						"time":200,
+ 						"startCss":{
+ 							"marginTop":rollingE.style.marginTop || 0
+ 						},
+ 						"css":{
+ 							"marginTop":-2
+ 						},
+ 						"callback":function(){}
+ 					}).init();
+ 				};
+ 				if(manualOperation){
+ 					down();
+ 				}
+ 				rollingID = setInterval(function(){down();},3000);
+ 			};
+ 			
+ 			var _downSubtitles = document.getElementById("downSubtitles");
+ 			var _upSubtitles = document.getElementById("upSubtitles");
+ 			rollingSubtitles(document.getElementById("rollingSubtitles"));
+ 			downSubtitles();
+
+ 			_upSubtitles.onclick = function(){
+ 				upSubtitles(true);
+ 			}
+ 			_upSubtitles.onmouseover = function(){
+ 				clearInterval(rollingID);
+ 			}
+ 			_upSubtitles.onmouseout = function(){
+ 				upSubtitles();
+ 			}
+ 			_downSubtitles.onclick = function(){
+ 				downSubtitles(true);
+ 			}
+ 			_downSubtitles.onclick = function(){
+ 				clearInterval(rollingID);
+ 			}
+ 			_downSubtitles.onclick = function(){
+ 				downSubtitles();
+ 			}
+ 		};
+ 		// addLoadEvent(funcRollingSubtitles);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">弹出层</p>
+	<div id="popupDiv" style="border:1px solid #ccc;display:none;height:100px;width:300px;text-align:center;" >
+		<input type="button" id="popupClose" value="关闭"/>
+		<p>我是弹出层</p>
+	</div>
+	<button type="button" class="btn btn-primary col-md-1" id="popupOpen">弹出</button>
+	<br>
+	<script type="text/javascript">
+ 		var funcPopUp = function(){
+ 			var setCss = function(_this,cssOption){
+ 				if(!_this || _this.nodeType === 3 || _this.nodeType === 8 || !_this.style){
+ 					return;
+ 				}
+ 				for(var cs in cssOption){
+ 					_this.style[cs] = cssOption[cs];
+ 				}
+ 				return _this;
+ 			};
+ 			function setPopup(e,openPop,closePop){
+ 				setCss(e,{
+ 					"position":"absolute",
+ 					"zIndex":100,
+ 					"backgroundColor":"#EBEDF3"
+ 				});
+ 				openPop.onclick = function(){
+ 					e.style.display = "block";
+ 					setCss(e,{
+ 						"left":"50%",
+ 						"marginLeft":-e.offsetWidth/2+"px",
+ 						"top":((document.body.scrollTop||document.documentElement.scrollTop)+window.screen.availHeight/2-e.offsetHeight)+"px"
+ 					});
+ 				}
+ 				closePop.onclick = function(){
+ 					e.style.display = "none";
+ 				}
+ 			};
+ 			setPopup(document.getElementById("popupDiv"),
+ 				document.getElementById("popupOpen"),
+ 				document.getElementById("popupClose"));
+ 		};
+ 		addLoadEvent(funcPopUp);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">用层模拟的提示消息框</p>
+	<div id="promptMsgBox" style="border:1px solid #ccc;display:none;height:100px;width:300px;text-align:center;">
+		<p>层模拟的提示框，请关闭</p>
+		<p>
+			<button type="button" class="btn btn-primary" id="promptMsgBoxAgree">确认</button>
+			<button type="button" class="btn btn-primary" id="promptMsgBoxCancel">取消</button>
+		</p>
+	</div>
+	<button type="button" class="btn btn-primary col-md-1" id="promptMsgBoxOpen">弹出</button>
+	<br>
+	<script type="text/javascript">
+ 		var funcPromptMsgBox = function(){
+ 			var setCss = function(_this,cssOption){
+ 				if(!_this || _this.nodeType === 3 || _this.nodeType === 8 || !_this.style){
+ 					return;
+ 				}
+ 				for(var cs in cssOption){
+ 					_this.style[cs] = cssOption[cs];
+ 				}
+ 				return _this;
+ 			};
+ 			function promptMsgBox(){
+ 				var promptMsgBox = document.getElementById("promptMsgBox");
+ 				var promptMsgBoxOpen = document.getElementById("promptMsgBoxOpen");
+ 				var promptMsgBoxAgree = document.getElementById("promptMsgBoxAgree");
+ 				var promptMsgBoxCancel = document.getElementById("promptMsgBoxCancel");
+ 				var agreeCallBack = function(){
+ 					alert("调用回调");
+ 				};
+ 				var cancelCallBack = function(){
+ 					alert("取消的回调函数");
+ 				};
+
+ 				setCss(promptMsgBox,{
+ 					"position":"absolute",
+ 					"zIndex":100,
+ 					"top":((document.body.scrollTop || document.documentElement.scrollTop)+window.screen.availHeight/2-promptMsgBox.offsetHeight)+"px",
+ 					"backgroundColor":"#EBEDF3"
+ 				});
+ 				promptMsgBoxOpen.onclick = function(){
+ 					promptMsgBox.style.display = "block";
+ 					setCss(promptMsgBox,{
+ 						"left":"50%",
+ 						"marginLeft":-promptMsgBox.offsetWidth/2+"px",
+ 						"top":((document.body.scrollTop||document.documentElement.scrollTop)+window.screen.availHeight/2-promptMsgBox.offsetHeight)+"px"
+ 					});
+ 				}
+ 				promptMsgBoxAgree.onclick = function(){
+ 					promptMsgBox.style.display = "none";
+ 					if(agreeCallBack){
+ 						agreeCallBack();
+ 					}
+ 				}
+ 				promptMsgBoxCancel.onclick = function(){
+ 					promptMsgBox.style.display = "none";
+ 					if(cancelCallBack){
+ 						cancelCallBack();
+ 					}
+ 				}
+ 			};
+ 			promptMsgBox();
+ 		};
+ 		addLoadEvent(funcPromptMsgBox);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">隐藏层</p>
+	<div id="hide" style="position:relative;border:1px solid #ccc;width:200px;height:100px;display:block;">
+		我是要被隐藏的层
+	</div>
+	<button type="button" class="btn btn-primary col-md-1" id="hidePrev">隐藏上边的层</button>
+	<br>
+	<script type="text/javascript">
+ 		var funcHide = function(){
+ 			document.getElementById("hidePrev").onclick = function(){
+ 				document.getElementById("hide").style.display = "none";
+ 			}
+ 		};
+ 		addLoadEvent(funcHide);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">用层实现滚动条</p>
+	<div style="position:relative;background-color:#f6f6f6;width:200px;border:1px #ccc solid;overflow:hidden;white-space:nowrap">
+		<div id="contentScroll" style="position:relative;left:0px">
+			<p>滚动！滚动！滚动！滚动！滚动！滚动！滚动！滚动！滚动！滚动！滚动！</p>
+			<p>滚动！滚动！滚动！滚动！滚动！滚动！滚动！滚动！滚动！滚动！滚动！</p>
+			<p>滚动！滚动！滚动！滚动！滚动！滚动！滚动！滚动！滚动！滚动！滚动！</p>
+		</div>
+		<div id="scrolling" style="position:relative;display:block;width:100px;height:10px;background-color:#fff;border:1px #979797 solid;-moz-border-radius:3px;-webkit-border-radius:3px;"></div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcScroll = function(){
+ 			var _mousepos = {
+ 				"_top":0,
+ 				"left":0
+ 			};
+ 			var getMousePoint = function(_e){
+ 				var _body = document.body;
+ 				var _left = 0;
+ 				var _top = 0;
+ 				if(typeof window.pageYOffset != 'undefined'){
+ 					_left = window.pageXOffset;
+ 					_top = window.pageYOffset;
+ 				}else if(typeof document.compatMode != 'undefined' && document.compatMode !='BackCompat'){
+ 					_left = document.documentElement.scrollLeft;
+ 					_top = document.documentElement.scrollTop;
+ 				}else if(typeof _body != 'undefined'){
+ 					_left = _body.scrollLeft;
+ 					_top = _body.scrollTop;
+ 				}
+ 				_left += _e.clientX;
+ 				_top += _e.clientY;
+
+ 				_mousepos.left = _left;
+ 				_mousepos.top = _top;
+
+ 				return _mousepos;
+ 			};
+ 			var getAbsoluteLeft = function(_e){
+ 				var _left = _e.offsetLeft;
+ 				var _current = _e.offsetParent;
+ 				while(_current !== null){
+ 					_left += _current.offsetLeft;
+ 					_current = _current.offsetParent;
+ 				}
+ 				return _left;
+ 			};
+ 			var getAbsoluteTop = function(_e){
+ 				var _top = _e.offsetTop;
+ 				var _current = _e.offsetParent;
+ 				while(_current !== null){
+ 					_top += _current.offsetTop;
+ 					_current = _current.offsetParent;
+ 				}
+ 				return _top;
+ 			};
+ 			var isScrollBar = false;
+ 			var scrollBarLeft = 0;
+ 			var scrollBarMaxLeft = 0;
+ 			var scrollBarObj = null;
+ 			var scrollBarContent = null;
+ 			var scrollBarScale = 1;
+ 			var scrollBar = function(options){
+ 				var _parent = options.scrolling.parentNode;
+ 				var parentWidth = _parent.offsetWidth;
+ 				var contentWidth = options.contentScroll.scrollWidth;
+ 				var _scrolling = options.scrolling;
+ 				var _scale = scrollBarScale = parentWidth/contentWidth;
+ 				var _scrollingWidth = parentWidth*_scale;
+
+ 				scrollBarContent = options.contentScroll;
+ 				scrollBarObj = _scrolling;
+ 				_scrolling.style.width = _scrollingWidth+"px";
+ 				scrollBarMaxLeft = getAbsoluteLeft(_parent)+_parent.offsetWidth-_scrolling.offsetWidth-10;
+ 				
+ 				_scrolling.onmousedown = function(event){//开启滚动
+ 					event = event || window.event;
+ 					var _pos = getMousePoint(event);
+ 					isScrollBar = true;
+ 					scrollBarLeft = _pos.left-getAbsoluteLeft(this);
+ 				}
+ 			};
+ 			var closeScrollBar = function(){
+ 				isScrollBar = false;
+ 			};
+ 			var moveScrollBar = function(event){
+ 				if(isScrollBar){
+ 					event = event || window.event;
+ 					var _pos = getMousePoint(event);
+ 					var _left = _pos.left - scrollBarLeft;
+ 					var cLeft = _left;
+ 					if(_left < 0){
+ 						_left = 0;
+ 						cLeft = 0;
+ 					}
+ 					if(_left > scrollBarMaxLeft){
+ 						_left = scrollBarMaxLeft;
+ 					}
+ 					if(cLeft > scrollBarMaxLeft+10){
+ 						cLeft = scrollBarMaxLeft+10;
+ 					}
+ 					scrollBarObj.style.left = _left+"px";
+ 					scrollBarContent.style.left = -1*cLeft/scrollBarScale+"px";
+ 				}
+ 			};
+ 			scrollBar({
+ 				"contentScroll":document.getElementById("contentScroll"),
+ 				"scrolling":document.getElementById("scrolling")
+ 			});
+ 			document.body.onmousemove = function(e){
+ 				moveScrollBar(e);
+ 			};
+ 			document.body.onmouseup = function(e){
+ 				closeScrollBar(e);
+ 			};
+ 		};
+ 		addLoadEvent(funcScroll);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+
+</script>
+</body>
+</html>

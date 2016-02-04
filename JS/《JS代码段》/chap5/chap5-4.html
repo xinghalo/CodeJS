@@ -1,0 +1,230 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!-- 第一种设置缓存机制-->
+	<meta http-equiv="pragma" content="no-cache" >
+	<meta http-equiv="Cache-Control" content="no-cache,must-revalidate">
+	<meta http-equiv="expires" content="wed,26 Feb 2020 08:00:00">
+	<!-- 第二设置缓存检查机制-->
+	<meta http-equiv="expires" content="0">
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">最小化、最大化、关闭窗口</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="updateWinMin">最小化</button>
+		<button type="button" class="btn btn-primary col-md-1" id="updateWinMax">最大化</button>
+		<button type="button" class="btn btn-primary col-md-1" id="updateWinClose">关闭窗口</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcUpdateWin = function(){
+ 			function updateWin(str){
+ 				var _w = 0;
+ 				var _h = 0;
+ 				if(str == "max"){
+ 					_w = screen.availWidth;
+ 					_h = screen.availHeight;
+ 				}
+ 				if(str == "min"){
+ 					_w = 1;
+ 					_h = 1;
+ 				}
+ 				if(str == "close"){
+ 					window.open("","_self","");
+ 					window.close();
+ 				}
+ 				window.moveTo(0,0);
+ 				window.resizeTo(_w,_h);//FF Chorme不支持
+ 			}
+ 			document.getElementById("updateWinMin").onclick = function(){
+ 				updateWin("min");
+ 			}
+ 			document.getElementById("updateWinMax").onclick = function(){
+ 				updateWin("max");
+ 			}
+ 			document.getElementById("updateWinClose").onclick = function(){
+ 				updateWin("close");
+ 			}
+ 		};
+ 		addLoadEvent(funcUpdateWin);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">禁止浏览器缓存</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="noCache">模板</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		document.getElementById("noCache").onclick = function(){
+ 			window.location = window.location.href+"#"+new Date().getTimes();//每次随机一个后缀，保证URL地址不同
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">测试连接速度</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			网址<input type="text" class="form-control" id="linkSpeedWeb">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			时间<input type="text" class="form-control" id="linkSpeedTime">
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" id="linkSpeed">测试</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcLinkSpeed = function(){
+ 			var linkSpeedTime = 0;
+ 			var linkSpeedInterl = -1;
+ 			var linkSpeedE = null;
+ 			var linkSpeedURL = "";
+ 			var getLinkSpeed = function(){
+ 				linkSpeedE.value = (linkSpeedTime/10)+"秒";
+ 				window.clearInterval(linkSpeedInterl);
+ 			};
+ 			var linkSpeed = function(e,t){
+ 				linkSpeedTime = 1;
+ 				window.clearInterval(linkSpeedInterl);
+ 				linkSpeedInterl = setInterval(function(){
+ 					linkSpeedTime++;
+ 					console.log(linkSpeedTime);
+ 				},100);
+ 				linkSpeedURL = e.value;
+ 				linkSpeedE = t;
+ 				var img = new Image();
+ 				img.src = linkSpeedURL+"/"+Math.random();
+ 				img.onerror = function(call){	
+ 					console.log(call);
+ 					if(linkSpeedURL){
+ 						getLinkSpeed();
+ 					}
+ 				}
+ 			};
+ 			document.getElementById("linkSpeed").onclick = function(){
+ 				linkSpeed(document.getElementById("linkSpeedWeb"),document.getElementById("linkSpeedTime"));
+ 			}
+ 		};
+ 		addLoadEvent(funcLinkSpeed);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">脚本永远不出错</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control">
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" >模板</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcNoError = function(){
+ 			window.onerror = function(m,f,l){
+ 				return true;
+ 			}
+ 		}
+ 		addLoadEvent(funcNoError);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">解决点击空链接返回页面顶部的问题</p>
+	<div class="container">
+	<div class="row">
+		<a href="">我是空链接</a>
+		<a href="#">我不是空链接</a>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcHref = function(){
+ 			var as = document.getElementsByTagName("a");
+ 			var len = as.length;
+ 			var i = 0;
+ 			var h = "";
+ 			while(i < len){
+ 				h = as[i].getAttribute("href");
+ 				if(h = "#" || !h)
+ 					as[i].href = "JavaScript:void(0)";
+ 				i++;
+ 			}
+ 		};
+ 		addLoadEvent(funcHref);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">获取浏览器信息</p>
+	<div class="container">
+	<div class="row" id="getBrowserInformation">
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcNavigator = function(){
+ 			var browerInfo = "";
+ 			var nav = navigator;
+ 			browerInfo += "<h3>中文-简体</h3>";
+ 			browerInfo += "浏览器代码名称:"+nav.appCodeName+"<br>";
+ 			browerInfo += "浏览器类型:"+nav.appName+"<br>";
+ 			browerInfo += "浏览器版本:"+nav.appVersion+"<br>";
+ 			browerInfo += "浏览器语言:"+nav.language+"<br>";
+ 			browerInfo += "是否启用JAVA:"+(nav.javaEnabled()?"是":"否")+"<br>";
+
+ 			browerInfo +="<h3>English</h3>";
+ 			for(var n in nav){
+ 				if(typeof nav[n] == "string"){
+ 					browerInfo +=n+":"+nav[n]+"<br>";
+ 				}
+ 			}
+ 			document.getElementById("getBrowserInformation").innerHTML = browerInfo;
+ 		};
+ 		addLoadEvent(funcNavigator);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">解决URL传递中文参数出现乱码</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="getURL">例子</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funGetURL = function(){
+ 			document.getElementById("getURL").onclick = function(){
+ 				var cencodeStr = encodeURIComponent("哈哈123");
+ 				alert("调用encodeURIComponent对'哈哈123'编码:"+cencodeStr+"\n"+"调用 decodeURIComponent解码后:"+decodeURIComponent(cencodeStr));
+ 			}
+ 		};
+ 		addLoadEvent(funGetURL);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

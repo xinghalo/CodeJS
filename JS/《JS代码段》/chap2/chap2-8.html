@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">对文本内容进行关键词过滤</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<textarea class="form-control" rows="10" id="keyWordsFiltering">
+关键词过滤：
+【地铁奇葩女用包占着座位称包是西班牙大牌】近日，有网友曝光上海十号线上一女子用包占着座位，一岁数大的老太太问其能否方便把包拿起、挤一下想坐一会。该女子称包是西班牙大牌，弄坏了你陪的起吗？老太站了一路...然后有网友称，她的包是zara.....
+			</textarea>
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcKeyWordsFiltering = function(){
+ 			var _keyWordsFiltering = document.getElementById("keyWordsFiltering");
+ 			_keyWordsFiltering.onclick = function(){
+ 				var keyWordsLibs = ["奇葩女","上海"];
+ 				var keyWordsLibsLen = keyWordsLibs.length;
+ 				for(var i=0;i<keyWordsLibsLen;i++){
+ 					_keyWordsFiltering.value = _keyWordsFiltering.value.replace(keyWordsLibs[i],"***");
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcKeyWordsFiltering);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">从字符串中剔除所有的HTML代码</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="delHtmlTags" placeholder="提出所有的HTML代码">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcDelHtmlTags = function(){
+ 			var _delHtmlTags = document.getElementById("delHtmlTags");
+ 			_delHtmlTags.onblur = function(){
+ 				this.value = this.value.replace(/<[\/\!]*[^<>]*>/ig,"");
+ 			}
+ 		};
+ 		addLoadEvent(funcDelHtmlTags);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">检测是否为数值型</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4" id="isNumber">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcIsNumber = function(){
+ 			var isNumber = function(_number){
+ 				//还有其他类型:number,boolean,string,function,object,undefined
+ 				return typeof _number == "number";
+ 			}
+ 			var _number1 = "1";
+ 			var _number2 = 1;
+ 			var _number3 = 1.22;
+ 			var _number4 = null;
+ 			var _html = "";
+ 			_html += isNumber(_number1)?"_number1是数值型<br/>":"_number1不是数值型<br/>";
+ 			_html += isNumber(_number2)?"_number2是数值型<br/>":"_number2不是数值型<br/>";
+ 			_html += isNumber(_number3)?"_number3是数值型<br/>":"_number3不是数值型<br/>";
+ 			_html += isNumber(_number4)?"_number4是数值型<br/>":"_number4不是数值型<br/>";
+ 			document.getElementById("isNumber").innerHTML = _html;
+ 		};
+ 		addLoadEvent(funcIsNumber);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">TextArea自适应文本行数</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<textarea class="form-control" rows="1" id="autoRow"></textarea>
+		</div>
+	</div>
+	</div>
+	<script type="text/javascript">
+ 		var funcAutoRow = function(){
+ 			var autoRow = document.getElementById("autoRow");
+ 			autoRow.style.overflowY = "hidden";
+ 			autoRow.onkeyup = function(){
+ 				autoRow.style.height = autoRow.scrollHeight+"px";
+ 			};
+ 		};
+ 		addLoadEvent(funcAutoRow);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

@@ -1,0 +1,319 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+		<p class="h3">让层随意拖动</p>
+	<div id="bindDrawElement">被拖动的层！鼠标按下——移动！</div>
+	<div style="position:relative;top:50px;height:10px">     </div>
+	<style type="text/css">
+		#bindDrawElement{
+			border: 1px solid #ccc;
+		}
+	</style>
+	<script type="text/javascript">
+ 		var funcBindDrawElement = function(){
+ 			var _mousepos = {
+ 				"_top":0,
+ 				"left":0
+ 			};
+ 			var getMousePoint = function(_e){
+ 				var _body = document.body;
+ 				var _left = 0;
+ 				var _top = 0;
+ 				if(typeof window.pageYOffset != 'undefined'){
+ 					_left = window.pageXOffset;
+ 					_top = window.pageYOffset;
+ 				}else if(typeof document.compatMode != 'undefined' && document.compatMode !='BackCompat'){
+ 					_left = document.documentElement.scrollLeft;
+ 					_top = document.documentElement.scrollTop;
+ 				}else if(typeof _body != 'undefined'){
+ 					_left = _body.scrollLeft;
+ 					_top = _body.scrollTop;
+ 				}
+ 				_left += _e.clientX;
+ 				_top += _e.clientY;
+
+ 				_mousepos.left = _left;
+ 				_mousepos.top = _top;
+
+ 				return _mousepos;
+ 			};
+ 			var getAbsoluteLeft = function(_e){
+ 				var _left = _e.offsetLeft;
+ 				var _current = _e.offsetParent;
+ 				while(_current !== null){
+ 					_left += _current.offsetLeft;
+ 					_current = _current.offsetParent;
+ 				}
+ 				return _left;
+ 			};
+ 			var getAbsoluteTop = function(_e){
+ 				var _top = _e.offsetTop;
+ 				var _current = _e.offsetParent;
+ 				while(_current !== null){
+ 					_top += _current.offsetTop;
+ 					_current = _current.offsetParent;
+ 				}
+ 				return _top;
+ 			};
+ 			var setCss = function(_this,cssOption){
+ 				if(!_this || _this.nodeType === 3 || _this.nodeType === 8 || !_this.style){
+ 					return;
+ 				}
+ 				for(var cs in cssOption){
+ 					_this.style[cs] = cssOption[cs];
+ 				}
+ 				return _this;
+ 			};
+ 			var drawElement = null;
+ 			var isDrawElement = false;
+ 			var startDrawPos = null;
+ 			//监听鼠标的按下和抬起事件，按下时，设置移动监听isDrawElment为true；抬起时，为false.
+ 			function bindDrawElement(e){
+ 				drawElement = e;
+ 				var absoluteLeft = getAbsoluteLeft(e);
+ 				var absoluteTop = getAbsoluteTop(e);
+ 				setCss(e,{
+ 					"position":"absolute",
+ 					"left":absoluteLeft+"px",
+ 					"top":absoluteTop+"px",
+ 					"cursor":"move",
+ 					"zIndex":101
+ 				});
+ 				e.onmousedown = function(event){
+ 					event = event || window.event;
+ 					var _pos = getMousePoint(event);
+ 					isDrawElement = true;
+ 					startDrawPos = {
+ 						"left":_pos.left - getAbsoluteLeft(this),
+ 						"top":_pos.top - getAbsoluteTop(this)
+ 					}
+ 				}
+ 				e.onmouseup = function(event){
+ 					isDrawElement = false;
+ 				}
+ 			};
+ 			function moveDraw(event){
+ 				if(isDrawElement){//当为真时，表明鼠标在移动DIV，进行重绘
+ 					event = event || window.event;
+ 					var _pos = getMousePoint(event);
+ 					setCss(drawElement,{
+ 						"left":(_pos.left-startDrawPos.left)+"px",
+ 						"top":(_pos.top-startDrawPos.top)+"px"
+ 					});
+ 				}
+ 			};
+ 			bindDrawElement(document.getElementById("bindDrawElement"));
+ 			document.body.onmousemove = function(e){//监听鼠标移动事件
+ 				moveDraw(e);
+ 			}
+ 		};
+ 		addLoadEvent(funcBindDrawElement);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">遮罩层效果</p>
+	<button type="button" class="btn btn-primary col-md-1" id="showMaskLayer">显示遮罩层</button>
+	<br>
+	<div id="maskLayer" style="display:none"></div>
+	<script type="text/javascript">
+ 		var funcShowMaskLayer = function(){
+ 			function setCss(_this,cssOptions){
+ 				if(!_this || _this.nodeType === 3 || _this.nodeType === 8 || !_this.style){
+ 					return ;
+ 				}
+ 				for(var cs in cssOptions){
+ 					_this.style[cs] = cssOptions[cs];
+ 				}
+ 				return _this;
+ 			}
+ 			document.getElementById("showMaskLayer").onclick = function(){
+ 				var b = document.body.parentNode;
+ 				var maskLayer = document.getElementById("maskLayer");
+ 				setCss(maskLayer,{
+ 					"position":"absolute",
+ 					"left":"0px",
+ 					"display":"block",
+ 					"top":"0px",
+ 					"zIndex":1000,//设置Z层
+ 					"backgroundColor":"#ccc",
+ 					"height":b.scrollHeight+"px",
+ 					"width":b.offsetWidth+"px",
+ 					"filter":"alpha(Opacity=60)",
+ 					"opacity":"0.6",
+ 					"-moz-opacity":"0.6",
+ 					"filter":"progid:DXImage Transform.Microsoft.Alpha(Opacity=60)",
+ 					"-MS-filter":"progid:DXImage Transform.Microsoft.Alpha(Opacity=60)"
+ 				});
+ 			}
+ 		}
+ 		addLoadEvent(funcShowMaskLayer);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">Tab选项卡切换</p>
+	<br>
+	<div id="tabSwitchParent">
+		<div id="tabSwitch" style="width:200px;top:-22px;">
+			<!-- 选项卡 -->
+			<div data-target="tabSwitch1" style="float:left;display:inline;width:30%" class="on">选项1</div>
+			<div data-target="tabSwitch2" style="float:left;display:inline;width:30%">选项2</div>
+			<div data-target="tabSwitch3" style="float:left;display:inline;width:30%">选项3</div>
+		</div>
+		<div class="tabSwitchTarget" style="display:block;color:#123323;" id="tabSwitch1">
+			选项卡1，哈哈哈哈哈
+		</div>
+		<div class="tabSwitchTarget" style="color:#abcdee;" id="tabSwitch2">
+			选项卡2，嘿嘿嘿嘿嘿
+		</div>
+		<div class="tabSwitchTarget" style="color:#444321;" id="tabSwitch3">
+			选项卡3，呜呜呜呜呜
+		</div>
+	</div>
+	<style type="text/css">
+		.tabSwitchParent{
+			position: relative;
+			height: 100px;
+			width: 200px;
+		}
+		.tabSwitchParent div{
+			position: relative;
+			float: left;
+		}
+		.tabSwitchTarget{
+			display: none;
+			left: 0;
+			top: 0px;
+			z-index: 1;
+			width: 324px;
+			height: 54px;
+			padding: 5px;
+			border: solid 1px #ccc;
+			color: #666;
+		}
+		#tabSwitch{
+			position: relative;
+			z-index: 2;
+			top: 1px;
+		}
+		#tabSwitch{
+			font-size: 15px;
+			margin: 0px;
+			text-align: center;
+			cursor: pointer;
+		}
+		#tabSwitch .on{
+			border: 1px solid #ccc;
+			border-bottom: none;
+			background-color: #fff;
+		}
+	</style>
+	<script type="text/javascript">
+ 		var funcTabSwitch = function(){
+ 			function getTypeElement(es,type){
+ 				var esLen = es.length;
+ 				var eArr = [];
+ 				var esl = null;
+ 				for(var i=0;i<esLen;i++){
+ 					esl = es[i];
+ 					if(esl.nodeName.replace("#","").toLocaleLowerCase() == type){
+ 						eArr.push(esl);
+ 					}
+ 				}
+ 				return eArr;
+ 			};
+ 			function tabSwitch(e){
+ 				var divs = getTypeElement(e.childNodes,"div");
+ 				var l = divs.length;
+ 				for(var i=0; i<l; i++){
+ 					divs[i].onclick = function(){
+ 						for(var ii=0;ii<l;ii++){
+ 							divs[ii].className = "";
+ 							document.getElementById("tabSwitch"+(ii+1)).style.display = "none";
+ 						}
+ 						this.className = "on";
+ 						document.getElementById(this.getAttribute("data-target")).style.display = "block";
+ 					}
+ 				}
+ 			};
+ 			tabSwitch(document.getElementById("tabSwitch"));
+ 		};
+ 		addLoadEvent(funcTabSwitch);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">对联浮动广告</p>
+	<div class="coupletAds" id="coupletAdsLeft">左边浮动广告</div>
+	<div class="coupletAds" id="coupletAdsRight">右边浮动广告</div>
+	<button type="button" class="btn btn-primary" id="openAds">显示对联广告</button>
+	<br>
+	<p>测试浮动广告...</p><br>
+	<p>测试浮动广告...</p><br>
+	<style type="text/css">
+		.coupletAds{
+			position: absolute;
+			width: 100px;
+			border:1px #ccc solid;
+			height: 200px;
+			z-index: 2000;
+			background-color: #ccc;
+			white-space: pre-wrap;
+			display: none;
+		}
+		#coupletAdsLeft{
+			left: 5px;
+		}
+		#coupletAdsRight{
+			left: 100%;
+			margin-left: -107px;
+		}
+	</style>
+	<script type="text/javascript">
+ 		var funcCoupletAds = function(){
+ 			var coupletAdsLeft = null;
+ 			var coupletAdsRight = null;
+ 			document.getElementById("openAds").onclick = function(){	
+ 				var coupletAds = function(adsLeft,adsRight){
+ 					coupletAdsLeft = adsLeft;
+ 					coupletAdsRight = adsRight;
+ 					coupletAdsLeft.style.display = "block";
+ 					coupletAdsRight.style.display = "block";
+ 					adsTop();
+ 				}
+	 			coupletAds(document.getElementById("coupletAdsLeft"),document.getElementById("coupletAdsRight"));
+ 			};
+ 			var adsTop = function(){
+ 					if(!coupletAdsLeft) return;
+ 					console.log("test");
+ 					var top = ((document.body.scrollTop || document.documentElement.scrollTop)+window.screen.availHeight/2-coupletAdsLeft.offsetHeight)+"px";
+ 					coupletAdsLeft.style.top = top;
+ 					coupletAdsRight.style.top = top;
+ 				}
+ 			window.onscroll = function(){
+ 				adsTop();
+ 			}
+ 		};
+ 		addLoadEvent(funcCoupletAds);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

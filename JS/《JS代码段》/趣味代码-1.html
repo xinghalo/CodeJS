@@ -1,0 +1,269 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">判断IE浏览器</p>
+	<div class="container">
+	<div class="row">
+		点击按钮，判断是否为IE浏览器：
+		<p style="color:red;">return ("ActiveXObject" in window);</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test1">测试</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		// appCodeName       返回浏览器的代码名。    
+		// appMinorVersion    返回浏览器的次级版本。    
+		// appName               返回浏览器的名称。    
+		// appVersion           返回浏览器的平台和版本信息。    
+		// browserLanguage    返回当前浏览器的语言。    
+		// cookieEnabled      返回指明浏览器中是否启用 cookie 的布尔值。    
+		// cpuClass               返回浏览器系统的 CPU 等级。    
+		// onLine                  返回指明系统是否处于脱机模式的布尔值。    
+		// platform                 返回运行浏览器的操作系统平台。    
+		// systemLanguage    返回 OS 使用的默认语言。    
+		// userAgent             返回由客户机发送服务器的 user-agent 头部的值。    
+		// userLanguage    返回 OS 的自然语言设置。
+ 		var funcTest1 = function(){
+ 			function isIE(){//兼容到IE11
+ 				// window.ActiveXObject ? true : false;  在IE11中返回false，是因为11中ActiveXObject使用了另一种开发方法 
+ 				return ("ActiveXObject" in window);//参考 http://www.5ycode.com/353
+	      	}
+	      	function isIE6() {
+	          	return navigator.userAgent.split(";")[1].toLowerCase().indexOf("msie 6.0")=="-1"?false:true;
+	      	}
+	      	function isIE7(){
+	       	   return navigator.userAgent.split(";")[1].toLowerCase().indexOf("msie 7.0")=="-1"?false:true;
+	      	}
+	     	function isIE8(){
+	          	return navigator.userAgent.split(";")[1].toLowerCase().indexOf("msie 8.0")=="-1"?false:true;
+	      	}
+	      	function isNN(){
+	         	return navigator.userAgent.indexOf("Netscape")!=-1;
+	      	}
+	      	function isOpera(){
+	          	return navigator.userAgent.indexOf("Opera")!=-1;
+	      	}
+	      	function isFF(){
+	          	return navigator.userAgent.indexOf("Firefox")!=-1;
+	      	}
+	      	function isChrome(){
+	          	return navigator.userAgent.indexOf("Chrome") > -1;
+	      	}
+ 			document.getElementById("test1").onclick = function(){
+ 				if(isIE()){
+	 				if(isIE8()){
+	 					alert("IE8");
+	 				}else if(isIE7()){
+	 					alert("IE7");
+	 				}else if(isIE6()){
+	 					alert("IE6");
+	 				}else{
+	 					alert("IE");
+	 				}
+ 				}else if(isFF()){
+ 					alert("fire fox");
+ 				}else if(isChrome()){
+ 					alert("Chrome");
+ 				}else if(isOpera()){
+ 					alert("Opera");
+ 				}else{
+ 					alert("else");
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcTest1);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">将日期转换为数值</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red;">+new Date();</p>
+		<button type="button" class="btn btn-primary" id="test2">先显示日期，再显示数值</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest2 = function(){
+ 			document.getElementById("test2").onclick = function(){
+ 				alert(new Date());
+ 				alert(+new Date());
+ 			}
+ 		};
+ 		addLoadEvent(funcTest2);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">非IE浏览器下，拥有length属性的类数组结构，转化成数组</p>
+	<div class="container">
+	<div class="row">
+		<a href="http://www.w3school.com.cn/jsref/jsref_slice_array.asp">Slice方法解释</a><br>
+		<a href="http://www.cnblogs.com/littledu/archive/2012/05/19/2508672.html">Array.prototype.slice.call(arguments)方法解析——肥杜</a><br>
+		<button type="button" class="btn btn-primary" id="test3">转换</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest3 = function(){
+ 			document.getElementById("test3").onclick = function(){
+ 				console.log("*************************** Test3 *****************************");
+	 			var a = {length:2,0:'000',1:'111'};
+	 			console.log(a);
+	 			console.log(Array.prototype.slice.call(a));
+	 			var b = {length:2};
+	 			console.log(b);
+	 			console.log(Array.prototype.slice.call(b));
+ 			}
+ 		};
+ 		addLoadEvent(funcTest3);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">最简单的选择运算符 ||</p>
+	<div class="container">
+	<div class="row">
+		如果第一个值为真则选取第一个;如果第一个为假，第二个为真，则选取第二个值
+		<p style="color:red;"> 0 || 3</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test4">测试</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest4 = function(){
+ 			document.getElementById("test4").onclick = function(){
+ 				console.log("*************************** Test4 *****************************");
+ 				var result4 = 0 || 3;
+ 				console.log(result4	);
+ 			}
+ 		};
+ 		addLoadEvent(funcTest4);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">单链式运算</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red;">
+		var a = 10;<br>
+		a++-1   ?
+		++a+1   ?
+		a+++b++ ?
+		</p>
+		先执行a-1,再执行a++<br>
+		<button type="button" class="btn btn-primary col-md-1" id="test5">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+  		var funcTest5 = function(){
+ 			document.getElementById("test5").onclick = function(){
+ 				console.log("*************************** Test5 *****************************");
+ 				var a = 10;
+ 				var b = 10;
+ 				console.log("a++-1");
+ 				console.log(a++-1);
+ 				a = 10;
+ 				console.log("++a+1");
+ 				console.log(++a+1);
+ 				a = 10;
+ 				console.log("a+++b++");
+ 				console.log(a+++b++);
+ 			}
+ 		};
+ 		addLoadEvent(funcTest5);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">避免链接跳转</p>
+	<div class="container">
+	<div class="row">
+		<p>href="javascript:void(0)"</p>
+		<a href="http://www.cnblogs.com/xing901022/">正常的跳转</a><br>
+		<a href="javascript:void(0)">测试禁止跳转的链接</a><br>
+	</div>
+	</div>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">跳转到新页面，并覆盖回退历史</p>
+	<div class="container">
+	<div class="row">
+		<p>location.replace("xxx")</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test7">跳转</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest7 = function(){
+ 			document.getElementById("test7").onclick = function(){
+ 				location.replace("http://www.cnblogs.com/xing901022/");
+ 			}
+ 		};
+ 		addLoadEvent(funcTest7);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">几秒后返回上一页</p>
+		<textarea class="form-control"><meta http-equiv="refresh" content="3;url=javascript:window.history.go(-1)"></textarea>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">在子窗口中刷新父窗口</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red;">需要放在服务器下运行</p>
+		<button type="button" class="btn btn-primary" id="test9">打开子窗口</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest9 = function(){
+ 			document.getElementById("test9").onclick = function(){
+ 				window.open("child.html",'width:200;height:200');
+ 			}
+ 		};
+ 		addLoadEvent(funcTest9);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">正则方法验证是否为负数</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red;">/^-\d+$/.test(str)  仅支持负整数</p>
+		<div class="col-md-4">
+			<input type="text" class="form-control" placeholder="输入要测试的数据" id="target">
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" id="test10">测试</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest10 = function(){
+ 			document.getElementById("test10").onclick = function(){
+ 				var value = document.getElementById("target").value;
+ 				alert(/^-\d+$/.test(value));
+ 			}
+ 		};
+ 		addLoadEvent(funcTest10);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

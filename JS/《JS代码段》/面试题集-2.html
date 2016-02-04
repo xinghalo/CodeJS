@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">第十六题</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			console.log('5'+3);<br>
+ 			console.log('5'-3);<br>
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="question16">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		document.getElementById("question16").onclick = function(){
+ 			console.log('5'+3);
+ 			console.log('5'-3);
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第十七题</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			console.log(1+-+++-+1);<br>
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="question17">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		document.getElementById("question17").onclick = function(){
+ 			console.log(1+-+++-+1);//Uncaught ReferenceError: Invalid left-hand side expression in prefix operation
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第十八题</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			var ary = Array(3);<br>
+ 			ary[0] = 2;<br>
+ 			console.log(ary.map(function(elem){return '1';}));<br>
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="question18">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		document.getElementById("question18").onclick = function(){
+ 			var ary = Array(3);
+ 			ary[0] = 2;
+ 			console.log(ary.map(function(elem){return '1';}));//["1"]
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第十九题</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			var ary = Array(3);<br>
+ 			ary[0] = 2;<br>
+ 			console.log(ary.map(function(elem){return '1';}));<br>
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="question19">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		document.getElementById("question19").onclick = function(){
+ 			function sidEffecting(ary){
+ 				ary[0] = ary[2];
+ 			}
+ 			function bar(a,b,c){
+ 				c  = 10;
+ 				sidEffecting(arguments);
+ 				return a+b+c;
+ 			}
+ 			console.log(bar(1,1,1));//21
+ 			var val = 'value';
+			console.info('Value id '+(val === 'value123')?'Something':'Nothing');
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第二十题</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			var a = 111111111111111110000;<br>
+ 			var b = 1111;<br>
+ 			console.log(a+b);<br>
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="question20">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		document.getElementById("question20").onclick = function(){
+ 			var a = 111111111111111110000;
+ 			var b = 1111;
+ 			console.log(a+b);
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第二十一题</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			var x = [].reverse;<br>
+ 			console.log(x());<br>
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="question21">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		document.getElementById("question21").onclick = function(){
+ 			var x = [].reverse;
+ 			console.log(x());
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第二十二题</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			Number.MIN_VALUE > 0
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="question22">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		document.getElementById("question22").onclick = function(){
+ 			console.log(Number.MIN_VALUE > 0);
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第二十三题</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			[1<2<3,3<2<1]
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="question23">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		document.getElementById("question23").onclick = function(){
+ 			console.log([1<2<3,3<2<1]);
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第二十四题</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			2==[[[2]]]
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="question24">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		document.getElementById("question24").onclick = function(){
+ 			console.log(2==[[[2]]]);
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第二十五题</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			console.log(3.toString());<br>
+ 			console.log(3..toString());<br>
+ 			console.log(3...toString());<br>
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="question25">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		document.getElementById("question25").onclick = function(){
+ 			console.log(3.toString());
+ 			console.log(3..toString());
+ 			console.log(3...toString());
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">第二十六题</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			(function(){
+ 				var x=y=1;
+ 			})();<br>
+ 			console.log(y);<br>
+ 			console.log(x);<br>
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="question26">结果</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		document.getElementById("question26").onclick = function(){
+ 			(function(){
+ 				var x=y=1;//var x1 =y1 =1;创建局部变量x1和全局变量y1。函数外部试图访问函数内部的变量，将会导致错误。
+ 			})();
+ 			console.log(y);
+ 			console.log(x);
+ 		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	27 
+</script>
+</body>
+</html>

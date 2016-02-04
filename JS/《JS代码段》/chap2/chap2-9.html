@@ -1,0 +1,254 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">判断单选框是否选中</p>
+	<div class="container">
+	<div class="row">
+		<label class="radio-inline">
+			<input type="radio" id="sexMan" name="sex" checked="checked">男
+		</label>
+		<label class="radio-inline">
+		  	<input type="radio" id="sexWoman" name="sex">女
+		</label>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcChecked = function(){
+ 			var sexMan = document.getElementById("sexMan");
+ 			var sexWoman = document.getElementById("sexWoman");
+ 			if(sexMan.checked){
+ 				console.log("sexMan checked!");
+ 			}else{
+ 				console.log("sexMan unChecked!");
+ 			}
+ 			if(sexWoman.checked){
+ 				console.log("sexWoman checked");
+ 			}else{
+ 				console.log("sexWoman unChecked");
+ 			}
+ 		};
+ 		addLoadEvent(funcChecked);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">判断复选框至少选中一项</p>
+	<div class="container">
+	<div class="row">
+		<label class="checkbox-inline">
+		  	<input type="checkbox" id="inlineCheckbox1" name="checkSelects" checked="checked">读书
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" id="inlineCheckbox2" name="checkSelects">跑步
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" id="inlineCheckbox3" name="checkSelects">游戏
+		</label>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcCheckbox = function(){
+ 			var _checkSelects = document.getElementsByName("checkSelects");
+ 			for(var i in _checkSelects){
+ 				if(_checkSelects[i].checked){
+ 					console.log("至少选中了一项！");
+ 					return;
+ 				}
+ 			}
+ 			console.log("没有选中");
+ 		};
+ 		addLoadEvent(funcCheckbox);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">限制复选框最多选择几项</p>
+	<div class="container">
+	<div class="row">
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="forbidcheckSelects">读书
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="forbidcheckSelects">跑步
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="forbidcheckSelects">游戏
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="forbidcheckSelects">游泳
+		</label>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcForbidCheckSelects = function(){
+ 			var _forbidcheckSelects = document.getElementsByName("forbidcheckSelects");
+ 			var banNums = 2;
+ 			for(var i in _forbidcheckSelects){
+ 				_forbidcheckSelects[i].onclick = function(){
+ 					var _forbidcheckSelect = document.getElementsByName("forbidcheckSelects");
+ 					var selectNum = 0;
+ 					for(var i in _forbidcheckSelect){
+ 						if(_forbidcheckSelect[i].checked){
+ 							selectNum++;
+ 						}
+ 					}
+ 					if(selectNum > banNums){
+ 						this.checked = false;
+ 					}
+ 				};
+ 			}
+ 		};
+ 		addLoadEvent(funcForbidCheckSelects);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">复选框全选、取消全选、反选</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="allSelect">全选</button>
+		<button type="button" class="btn btn-primary col-md-1" id="cancelAllSelect">取消</button>
+		<button type="button" class="btn btn-primary col-md-1" id="_select">反选</button>
+	</div>
+	<div class="row">
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="actionSelects">读书
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="actionSelects">跑步
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="actionSelects">游戏
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="actionSelects">游泳
+		</label>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcSeleted = function(){
+ 			var targets = document.getElementsByName("actionSelects");
+ 			var targetsLen = targets.length;
+ 			var i = 0;
+ 			document.getElementById("allSelect").onclick = function(){
+ 				for(i=0;i<targetsLen;i++){
+ 					targets[i].checked = true;
+ 				}
+ 			}
+ 			document.getElementById("cancelAllSelect").onclick = function(){
+ 				for(i=0;i<targetsLen;i++){
+ 					targets[i].checked = false;
+ 				}
+ 			}
+ 			document.getElementById("_select").onclick = function(){
+ 				for(i=0;i<targetsLen;i++){
+ 					targets[i].checked = !targets[i].checked;
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcSeleted);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">根据指定的内容选中复选框</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<textarea class="form-control" rows="10" id="contentCheckbox" data-target="autoKeyWordSelect"></textarea>
+		</div>
+	</div>
+	<div class="row">
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="autoKeyWordSelect" data-k="读书">读书
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="autoKeyWordSelect" data-k="跑步">跑步
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="autoKeyWordSelect" data-k="游戏">游戏
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="autoKeyWordSelect" data-k="游泳">游泳
+		</label>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcAutoKeyWord = function(){
+ 			var contentCheckbox = document.getElementById("contentCheckbox");
+ 			var _targets = document.getElementsByName("autoKeyWordSelect");
+ 			var targetsLen = _targets.length;
+ 			var i = 0;
+ 			contentCheckbox.onkeyup = function(){
+ 				for(i=0;i<targetsLen;i++){
+ 					var _t = _targets[i];
+ 					var _v = this.value;
+ 					_v.search(_t.getAttribute("data-k"))!=-1?_t.checked = true:_t.checked = false;
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcAutoKeyWord);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">获取选中的复选框值</p>
+	<div class="container">
+	<div class="row">
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="getSelectContent">读书
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="getSelectContent">跑步
+		</label>
+		<label class="checkbox-inline">
+		  	<input type="checkbox" name="getSelectContent">游戏
+		</label>
+	</div>
+	<div class="row">
+		<p id="selectContents"></p>
+	</div>
+	</div>
+
+	<script type="text/javascript">
+ 		var funcSelectContent = function(){
+ 			var selectContents = "";
+ 			var _selectContent = document.getElementsByName("getSelectContent");
+ 			for(var i = 0,sl = _selectContent.length; i < sl ; i++){
+ 				_selectContent[i].onclick = function(){
+ 					//this.nextSibling获取其文本节点，通过data属性获得值
+ 					var _t = this.nextSibling.data;
+ 					if(this.checked){
+ 						selectContents += "<br/>"+_t;
+ 					}else{
+ 						selectContents = selectContents.replace("<br/>"+_t,"");
+ 					}
+ 					document.getElementById("selectContents").innerHTML = "被选择的内容是"+selectContents;
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcSelectContent);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

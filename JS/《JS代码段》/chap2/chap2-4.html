@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+	<style type="text/css">
+	.charStyle{
+		color:green;
+		font-weight: bold;
+	}
+	</style>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">实时提示可输入的字符（区分中英文）</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="remainingCharacters" data-length="5" data-model="Ch">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-2">
+			<p style="color:red;">还可以输入
+			<span class="charStyle" id="charActers1">5</span>
+			字符
+			</p>
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var strLength = function(_str,_model){
+			_model = _model || "Ch"; //En模式下，中文算作1字符；Ch模式下，中文为2个字符
+			var _strLen = _str.length; //获取字符串长度
+			if(_strLen == 0){
+				return 0;
+			}else{
+				var chinese = _str.match(/[\u4e00-\u9fa5]/g); //匹配中文
+				return _strLen + (chinese && _model == "Ch"?chinese.length:0); //为什么要&&？
+			}
+		}
+		var funcCharacterNumbers = function(){
+			var remainingCharacters = document.getElementById("remainingCharacters");
+			var clearRemainingCharacters = function(_this){
+				var _value = _this.value;
+				var _valueLength = _value.length;
+				var dataLength = _this.getAttribute("data-length");
+				var dataModel = _this.getAttribute("data-model");
+				var subLen = dataLength;
+				if(dataModel == "Ch"){//仅当开启Ch后，才对重新计算截取的长度
+					_valueLength = strLength(_value,dataModel);
+					var vv = _value.match(/[\u4e00-\u9fa5]/g); //当输入【哈哈】时，vv是["哈","哈"]数组
+					subLen = dataLength - (!vv?0:vv.length);
+				}
+				//_valueLength代表总共的字符长度，比如哈哈哈 为 6
+				//dataLength是我们定义的限制长度，比如 5
+				//subLen是计算的截取长度，当输入家具啊
+				if(_valueLength > dataLength){
+					_this.value = _value.substr(0,subLen);
+				}
+
+				if(remainingCharacters){
+					var number = _valueLength>dataLength?0:dataLength-_valueLength;
+					var _elem = document.getElementById("charActers1");
+					_elem.innerHTML = number;
+				}
+			};
+			remainingCharacters.onfocus = function(){
+				clearRemainingCharacters(this);
+			};
+			remainingCharacters.onkeyup = function(){
+				clearRemainingCharacters(this);
+			};
+			remainingCharacters.onblur = function(){
+				clearRemainingCharacters(this);
+			};
+		}
+		addLoadEvent(funcCharacterNumbers);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">在输入框中提示信息</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" placeholder="在Html5中使用placeholder">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="hintInput" data-hint="使用JS DOM完成placeholder">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var hintInput = document.getElementById("hintInput");
+		var dataHint = hintInput.getAttribute("data-hint");
+		hintInput.onfocus = function(){
+			if(hintInput.value === dataHint){
+				hintInput.value = "";
+			}
+		}
+		hintInput.onblur = function(){
+			if(hintInput.value === ""){
+				hintInput.value = dataHint;
+			}
+		}
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</body>
+</html>

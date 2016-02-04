@@ -1,0 +1,188 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">简单的数字及字符操作</p>
+	<div class="container">
+	<div class="row">
+
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var getLowerCase = function(str){
+			return str.toUpperCase();
+		};
+		var getNumbers = function(s){
+			var n = parseInt(s,10);
+			if(isNaN(n)){
+				return 0;
+			}
+			return n;
+		};
+		var getString = function(n){
+			return n.toString();
+		};
+		//小写转大写
+		console.log("haha".substr(0,2));
+ 		console.log(getLowerCase("ASDsssss2asdA"));
+		console.log(getNumbers("ASDsssss2asdA"));
+		console.log(getNumbers("321"));
+		console.log(getNumbers("DA123dsadfa321"));
+		console.log(getNumbers("ASDssss123asdA123"));
+		console.log(getString(123123)+"类型:"+typeof getString(123123));
+		console.log(getString(234234)+"类型:"+typeof getString(234234));
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">清空所有文本型输入框</p>
+	<form id="clearForm">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4">
+					<input type="text" class="form-control" value="文本"><br/>
+				</div>
+				<button type="button" class="btn btn-primary col-md-1" id="clearText">清空</button>
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<textarea class="form-control" rows="3">文本域</textarea>
+				</div>
+			</div>
+		</div>
+	</form>
+	<script type="text/javascript">
+ 		var funcClearText = function(){
+ 			var _clearText = document.getElementById("clearText");
+ 			_clearText.onclick = function(){
+ 				var _elements = document.getElementById("clearForm").elements;
+ 				var _elementsLen = _elements.length;
+ 				var _ei = null;
+ 				for(var i=0; i<_elementsLen ; i++){
+ 					_ei = _elements[i];
+ 					(_ei.type === "text" || _ei.type === "textarea")&&(_ei.value = "");
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcClearText);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">JavaScript对上传文件的相关操作</p>
+	<form id="fileUpload" enctype="multipart/form-data">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4" id="target">
+					<p><input type="file" class="form-control" id="filedemo1"></p>
+				</div>
+			</div>
+			<div class="row">
+					<button type="button" class="btn btn-primary col-md-1" id="addFileUpload">添加</button>
+					<button type="button" class="btn btn-primary col-md-1" id="clearFileUpload">清空</button>
+					<button type="button" class="btn btn-primary col-md-1" id="fileUploadSub">上传</button>
+			</div>
+		</div>
+	</form>
+	<script type="text/javascript">
+ 		var funcFileUpload = function(){
+ 			var uploadCount = 1;
+ 			var isIE = function(){
+ 				return document.all?true:false;
+ 			}
+ 			var getFileSize = function(_f){
+ 				var _fileSize = 0;
+ 				if(isIE() && !_f.files){
+ 					var filePath = _f.value;
+ 					var fileSystem = new ActiveXObject("Scripting.FileSystemObject");
+ 					if(!fileSystem.FileExists(filePath)){
+ 						return 0;
+ 					}
+ 					var file = fileSystem.GetFile(filePath);
+ 					_fileSize = file.Size;
+ 				}else{
+ 					_fileSize = (_f.files[0] && _f.files[0].size) || 0;
+ 				}
+ 				return _fileSize;
+ 			};
+ 			var fileType = function(_eForm,types){
+ 				var _elements = _eForm.elements;
+ 				var _elementsLen = _elements.length;
+ 				var _v = "";
+ 				var _ei = null;
+ 				var _contentType = "";
+ 				for( var i=0 ; i<_elementsLen ; i++){
+ 					_ei = _elements[i];
+ 					if(_ei.type == "file"){
+ 						_v = _ei.value;
+ 						_contentType = _v && _v.match(/^(.*)(\.)(.{1,8})$/)[3];
+ 						if(!_v || types.search(_contentType)!=-1){
+ 							return false;
+ 						}
+ 					}
+ 				}
+ 				return true;
+ 			};
+ 			var clearFile = function(_eForm){
+ 				var _elements = _eForm.elements;
+ 				console.log(_elements);
+ 				var _elementsLen = _elements.length;
+ 				var _ei = null;
+ 				for(var i=0 ; i<_elementsLen ; i++){
+ 					_ei = _elements[i];
+ 					(_ei.type == "file") && ((isIE() && (_ei.outerHTML = _ei.outerHTML))||(_ei.value=""));
+ 				}
+ 			};
+ 			var fileUpload = function(){
+ 				var _fileUpload = document.getElementById("fileUpload");
+ 				var _addFileUpload = document.getElementById("addFileUpload");
+ 				var _clearFileUpload = document.getElementById("clearFileUpload");
+ 				var _filedemo1 = document.getElementById("filedemo1");
+ 				var _fileUploadSub = document.getElementById("fileUploadSub");
+ 				var _target = document.getElementById("target");
+ 				_fileUploadSub.onclick = function(){
+ 					alert("测试获取文件大小:"+getFileSize(_filedemo1));
+ 					if(!fileType(_fileUpload,"text")){
+ 						return ;
+ 					}
+ 				};
+ 				_clearFileUpload.onclick = function(){
+ 					clearFile(_fileUpload);
+ 				};
+ 				_addFileUpload.onclick = function(){
+ 					uploadCount++;
+ 					var _input = document.createElement("input");
+ 					var _pE = document.createElement("p");
+ 					_input.name = "filedemo"+uploadCount;
+ 					_input.id = "filedemo"+uploadCount;
+ 					_input.type = "file";
+ 					_input.className = "form-control" //指定class
+ 					_pE.appendChild(_input);
+ 					_target.appendChild(_pE);
+ 				};
+ 			};
+ 			fileUpload();
+ 		};
+ 		addLoadEvent(funcFileUpload);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

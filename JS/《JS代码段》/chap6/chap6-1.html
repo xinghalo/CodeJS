@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">获取日期</p>
+	
+	<script type="text/javascript">
+ 		var funcGetDate = function(){
+ 			var d = new Date();
+ 			console.log(d);
+ 			console.log(d.getFullYear()+"年");
+ 			console.log((d.getMonth()+1)+"月");//月返回的是0-11，因此要加1
+ 			console.log(d.getDate()+"日");
+ 			console.log(d.getHours()+"时");
+ 			console.log(d.getMinutes()+"分");
+ 			console.log(d.getSeconds()+"秒");
+ 		};
+ 		addLoadEvent(funcGetDate);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">显示当前时间</p>
+	<div class="container">
+	<div class="row">
+		<p id="showTime"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcShowTime = function(){
+ 			var showTime = function(){
+ 				var d = new Date();
+ 				return d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日"+d.getHours()+"时"+d.getMinutes()+"分"+d.getSeconds()+"秒";
+ 			}
+ 			document.getElementById("showTime").innerHTML = "时间"+showTime();
+ 		};
+ 		addLoadEvent(funcShowTime);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">显示最后修改的时间</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" placehoder="失去焦点时，会修改文本" id="updateContent">
+		</div>
+		<p id="getLastTime"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcGetLastTime = function(){
+ 			var showTime = function(){
+ 				var d = new Date();
+ 				return d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日"+d.getHours()+"时"+d.getMinutes()+"分"+d.getSeconds()+"秒";
+ 			}
+ 			document.getElementById("updateContent").onblur = function(){
+ 				document.getElementById("getLastTime").innerHTML = "时间"+showTime();
+ 			}
+ 		};
+ 		addLoadEvent(funcGetLastTime);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">实时显示当前时间</p>
+	<div class="container">
+	<div class="row">
+		<p id="showNowTime"></p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcShowNowTime = function(){
+ 			var showTime = function(){
+ 				var d = new Date();
+ 				return d.getFullYear()+"年"+(d.getMonth()+1)+"月"+d.getDate()+"日"+d.getHours()+"时"+d.getMinutes()+"分"+d.getSeconds()+"秒";
+ 			}
+ 			setInterval(function(){
+ 				document.getElementById("showNowTime").innerHTML = "时间"+showTime();
+ 			},1000);
+ 		};
+ 		addLoadEvent(funcShowNowTime);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">将日期格式化成字符串</p>
+	<div class="container">
+	<div class="row">
+		<p id="formatTime1">格式化日期1:</p><br>
+		<p id="formatTime2">格式化日期2:</p><br>
+		<p id="formatTime3">格式化日期3:</p>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcFormatTime = function(){
+ 			//把传入的字符串中的字母替换成时间数字
+ 			function dateFormat(){
+ 				Date.prototype.format = function(f){
+ 					var date = {
+ 						"Y":this.getFullYear(),
+ 						"M":(this.getMonth()+1),
+ 						"D":this.getDate(),
+ 						"h":this.getHours(),
+ 						"m":this.getMinutes(),
+ 						"s":this.getSeconds()
+ 					};
+ 					var d = "";
+ 					var r =false;
+ 					var reg = null;
+ 					var _d = "";
+
+ 					for(d in date){
+ 						reg = new RegExp("["+d+"]{1,}","g");
+ 						r = reg.test(f);
+ 						if(r){
+ 							_d = date[d];
+ 							f = f.replace(reg,_d<10?("0"+_d):_d);
+ 						}
+ 					}
+ 					return f;
+ 				}
+ 			}
+ 			var d = new Date();
+ 			dateFormat();
+ 			document.getElementById("formatTime1").innerHTML = "格式化日期1"+d.format("YYYY-MM-DD h:m:s");
+ 			document.getElementById("formatTime2").innerHTML = "格式化日期2"+d.format("YYYY/MM/DD h-m-s");
+ 			document.getElementById("formatTime3").innerHTML = "格式化日期3"+d.format("Y:M:D h:m:s");
+ 		};
+ 		addLoadEvent(funcFormatTime);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

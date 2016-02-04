@@ -1,0 +1,13 @@
+<html>
+<body>
+	<script type="text/javascript">
+	var is_array = function(value){
+		return Object.prototype.toString.apply(value) === '[object Array]';
+	}
+	var testArr = [];
+	var testObj = {};
+	console.log(is_array(testArr));
+	console.log(is_array(testObj));
+	</script>
+</body>
+</html>

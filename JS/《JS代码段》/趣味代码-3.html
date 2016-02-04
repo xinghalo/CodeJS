@@ -1,0 +1,265 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">把一个值转换成布尔型的最简单的方式</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			使用!!转换成布尔型
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test21">测试</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest21 = function(){
+ 			document.getElementById("test21").onclick = function(){
+ 				console.log("!!'demo'  "+!!'demo');
+ 				console.log("!!''  "+!!'');
+ 				console.log("!!'0'  "+!!'0');
+ 				console.log("!!'1'  "+!!'1');
+ 				console.log("!!{}  "+!!{});
+ 				console.log("!!true  "+!!true);
+ 			}
+ 		};
+ 		addLoadEvent(funcTest21);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">判断是否支持HTML5</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			使用!!navigator.geolocation
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test22">测试HTML5</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest22 = function(){
+ 			document.getElementById("test22").onclick = function(){
+ 				alert(!!navigator.geolocation);
+ 			}
+ 		};
+ 		addLoadEvent(funcTest22);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">判断是否支持Canvas</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			使用!!document.createElement('canvas').getContext;
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test23">测试Canvas</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest23 = function(){
+ 			document.getElementById("test23").onclick = function(){
+ 				alert(!!document.createElement('canvas').getContext);
+ 			}
+ 		};
+ 		addLoadEvent(funcTest23);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">判断IE的版本（新版本的userAgent信息变了）</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			使用window.navigator.appVersion
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test24">获取版本</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest24 = function(){
+ 			document.getElementById("test24").onclick = function(){
+ 				alert(window.navigator.appVersion);
+ 			}
+ 		};
+ 		addLoadEvent(funcTest24);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">声明变量的缩写方法</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			var x;<br>
+			var y;<br>
+			var z = 3;<br>
+		</p>
+		可以缩写为：
+		<p style="color:blue">
+			var x,y,z=3;
+		</p>
+	</div>
+	</div>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">捕捉ctrl+Enter</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="test26">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest26 = function(){
+ 			document.getElementById("test26").onkeydown = function(event){
+ 				event = event || window.event;
+ 				if(event.ctrlKey && event.keyCode == 13){
+ 					alert("ctrl+enter");
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcTest26);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">获取浏览器插件的数目</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			navigator.plugins.length
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test27">查询</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest27 = function(){
+ 			document.getElementById("test27").onclick = function(){
+ 				alert(navigator.plugins.length);
+ 				console.log(navigator.plugins);
+ 				for(var elem in navigator.plugins){
+ 					console.log(elem);
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcTest27);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">判断操作系统</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			navigator.userAgent.indexOf("xxx");
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test28">测试</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest28 = function(){
+ 			document.getElementById("test28").onclick = function(){
+ 				var osType = "";
+ 				var windows = (navigator.userAgent.indexOf("Windows",0)!=-1)?1:0;
+ 				var mac = (navigator.userAgent.toLowerCase().indexOf("mac",0)!=-1)?1:0;
+ 				var Linux = (navigator.userAgent.indexOf("Linux",0)!=-1)?1:0;
+ 				var Unix = (navigator.userAgent.indexOf("X11",0)!=-1)?1:0;
+ 				if(windows){
+ 					alert("windows");
+ 				}else if(mac){
+ 					alert("mac");
+ 				}else if(Linux){
+ 					alert("linux");
+ 				}else if(Unix){
+ 					alert("unix");
+ 				}else{
+ 					alert("else");
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcTest28);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">判断浏览器是否支持移动设备</p>
+	<div class="container">
+	<div class="row">
+		<p style="color:red">
+			var mobileReg = /iphone|ipod|android.*mobile|windows.*phone|blackberry.*mobile/i;<br>
+			使用mobileReg.test(window.navigator.userAgent.toLowerCase())测试
+		</p>
+		<button type="button" class="btn btn-primary col-md-1" id="test29">测试</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcTest29 = function(){
+ 			document.getElementById("test29").onclick = function(){
+ 				var mobileReg = /iphone|ipod|android.*mobile|windows.*phone|blackberry.*mobile/i;
+ 				if(mobileReg.test(window.navigator.userAgent.toLowerCase())){
+ 					alert("支持移动设备");
+ 				}else{
+ 					alert("不支持移动设备");
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcTest29);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">惰性加载（不理解）</p>
+	
+	<script type="text/javascript">
+ 		function addEvents(type,element,fun){
+ 			if(element.addEventListener){
+ 				element.addEventListener(type,fun,false);
+ 			}else if(element.attachEvent){
+ 				element.attachEvent('on'+type,fun);
+ 			}else{
+ 				element['on'+type] = fun;
+ 			}
+ 		}
+ 		//惰性载入,使用函数代码内部的方法覆盖原有的代码
+ 		var addEvents = (
+ 			function(){
+ 			if(document.addEventListener){
+ 				return function(type,element,fun){
+ 					element.addEventListener(type,fun,false);
+ 				}
+ 			}else if(document.attachEvent){
+ 				return function(type,element,fun){
+ 					element.attachEvent('on'+type,fun);
+ 				}
+ 			}else{
+ 				return function(type,element,fun){
+ 					element['on'+type] = fun;
+ 				}
+ 			}
+ 		}
+ 			)();
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

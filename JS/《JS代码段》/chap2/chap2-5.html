@@ -1,0 +1,225 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">自动显示滚动条</p>
+	<div id="rollContent" data-width="80" data-right="80" class="rollContent">
+		《静夜思》
+		床前明月光，
+		疑似地上霜。
+		举头望明月，
+		低头吃脚丫。
+	</div>
+	
+	<script type="text/javascript">
+		//主要思想是通过内嵌一个<div>，设置内部的div的top属性上浮，下浮
+		var funcRollContent = function(){
+			var rollContent = document.getElementById("rollContent");
+			var _div = rollContent.innerHTML;
+			var setCSS = function(_this,cssOption){
+				if(!_this || _this.nodeType === 3 || _this.nodeType === 8 || !_this.style){
+					return;
+				}
+				for(var cs in cssOption){
+					_this.style[cs] = cssOption[cs];
+				}
+				return _this;
+			};
+			rollContent.innerHTML = "<div id='rollContent_roll'>"+_div+"</div>";
+			setCSS(rollContent,{
+				"position":"relative",
+				"overflow":"hidden",
+				"wordWrap":"break-word",
+				"wordBreak":"break-all",
+				"width":rollContent.getAttribute("data-width")+"px",
+				"height":rollContent.getAttribute("data-right")+"px"
+			});
+			var timeRoll = document.getElementById("rollContent_roll");
+			var _h = timeRoll.offsetHeight;
+			var flag = 1;
+			//滚动的核心代码
+			var timeoutRoll = function(){ 
+				var _h = timeRoll.offsetHeight;
+				var _t = parseInt(timeRoll.style.top,10);//按照十进制，提取数字时
+				if(flag){//设置标记位，当滚动到顶部时，会向下滚动。
+					if(_h > Math.abs(_t)){
+						_t = _t-10;
+					}
+					if(_h === Math.abs(_t)){
+						flag = 0;
+					}
+				}else{
+					if(_h >= Math.abs(_t)){
+						_t = _t+10;
+					}
+					if(0 === Math.abs(_t)){
+						flag = 1;
+					}
+				}
+				setCSS(timeRoll,{
+					"top":_t+"px"
+				});
+				
+				setTimeout(timeoutRoll,200);
+			};
+			if(_h > rollContent.getAttribute("data-right")){
+				setCSS(timeRoll,{
+					"position":"relative",
+					"top":"0px"
+				});
+				timeoutRoll();
+			}
+		};
+		addLoadEvent(funcRollContent);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">密码强度实时验证</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="password" class="form-control" id="passwordStrength">
+		</div>
+		<div class="col-md-2">
+			<span id="showStrength"></span>
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var funcPasswrodStrength = function(){
+			var setCSS = function(_this,cssOption){
+				if(!_this || _this.nodeType === 3 || _this.nodeType === 8 || !_this.style){
+					return;
+				}
+				for(var cs in cssOption){
+					_this.style[cs] = cssOption[cs];
+				}
+				return _this;
+			};
+			var passwordStrength = function(_passwordStrength,_showStrength){
+				// 字符权重：
+				// 数字1
+				// 字母2
+				// 其他字符3
+				// 当密码长度小于6时，不符合标准
+				// 长度>=6，强度小于10，强度弱
+				// 长度>=6，强度>=10且<15，强度中
+				// 长度>=6，强度>=15，强
+				_passwordStrength.onkeyup = function(){
+					var _color = ["red","yellow","orange","green"];
+					var _msgs = ["密码太短","弱","中","强"];
+					var _strength = 0;
+					var _value = _passwordStrength.value;
+					var _valueLength = _value.length;
+					var i = 0;
+					var charStrength = function(char){
+						if(char>=48 && char<=57){ //数字
+							return 1;
+						}
+						if(char>=97 && char<=122){ //小写
+							return 2;
+						}else{
+							return 3;
+						}
+					};
+					if(_valueLength < 6){
+						_showStrength.innerHTML = _msgs[0];
+						setCSS(_showStrength,{
+							"color":_color[0]
+						});
+					}else{
+						for( ; i<_valueLength;i++){
+							_strength += charStrength(_value.toLocaleLowerCase().charCodeAt(i));
+						}
+						if(_strength < 10){
+							_showStrength.innerHTML = _msgs[1];
+							setCSS(_showStrength,{
+								"color":_color[1]
+							});
+						}
+						if(_strength>=10 && _strength<15){
+							_showStrength.innerHTML = _msgs[2];
+							setCSS(_showStrength,{
+								"color":_color[2]
+							});
+						}
+						if(_strength>=15){
+							_showStrength.innerHTML = _msgs[3];
+							setCSS(_showStrength,{
+								"color":_color[3]
+							});
+						}
+					}
+				};
+			};
+			passwordStrength(document.getElementById("passwordStrength"),document.getElementById("showStrength"));
+		}
+		addLoadEvent(funcPasswrodStrength);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">回车提交表单</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="enterSubmit">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var funcEnterSubmit = function(){
+			document.getElementById("enterSubmit").onkeyup = function(e){
+				e = e || window.event;
+				var keycode = e.keycode || e.which || e.charCode;
+				if(keycode === 13){
+					alert("回车提交成功");
+				}
+			}
+			//FileFox 和 Opera
+			// function keyDown(e) {  
+			//    var keycode = e.which;  
+			//    var realkey = String.fromCharCode(e.which);  
+			//    alert("按键码: " + keycode + " 字符: " + realkey);  }
+
+			// IE中
+			//   function keyDown() {  
+			//    var keycode = window.event.keyCode;  
+			//    var realkey = String.fromCharCode(event.keyCode);  
+			// 　　     alert("按键码: " + keycode + " 字符: " + realkey);  
+			//   } 
+
+			// 简单的识别浏览器的方法：
+			// 　　    function keyUp(e) {
+			// 	       　 var currKey=0,e=e||event; //进行浏览器事件对象获取的兼容
+			// 	      　  currKey=e.keyCode||e.which||e.charCode; //为了兼容浏览器按键事件对象的按键码属性
+			// 	      　　var keyName = String.fromCharCode(currKey);
+			// 	       　 alert("按键码: " + currKey + " 字符: " + keyName);
+			// 	       }
+			// 	       document.onkeyup = keyUp;
+		};
+		addLoadEvent(funcEnterSubmit);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

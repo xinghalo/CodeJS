@@ -1,0 +1,49 @@
+<html>
+<body>
+	<script type="text/javascript">
+	//method1
+	var fibonacci = function(n){
+		return n<2?n:fibonacci(n-1)+fibonacci(n-2);
+	}
+	for(var i=0;i<=10;i++){
+		console.log('//'+i+' : '+fibonacci(i));
+	}
+
+	//method2
+	var fibonacci_memory =function(){
+		var memo = [0,1];
+		var fib = function(n){
+			var result = memo[n];
+			if(typeof result!=='number'){
+				result = fib(n-1)+fib(n-2);
+				memo[n] = result;
+			}
+			return result;
+		};
+		return fib;
+	}();
+	console.log(fibonacci_memory(10));
+
+	//method3
+	var memorizer = function(memo,formula){
+		var recur = function(n){
+			var result = memo[n];
+			if(typeof result !== 'number'){
+				result = formula(recur,n);
+				memo[n] = result;
+			}
+			return result;
+		};
+		return recur;
+	};
+	var fibonacci1 = memorizer([0,1],function(recur,n){
+		return recur(n-1)+recur(n-2);
+	});
+	var factorial = memorizer([0,1],function(recur,n){
+		return n*recur(n-1);
+	});
+	console.log(fibonacci1(10));
+	console.log(factorial(10));
+	</script>
+</body>
+</html>

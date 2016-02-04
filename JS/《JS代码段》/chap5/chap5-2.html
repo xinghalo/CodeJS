@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">打开模式子窗口</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="returnText" disabled>
+		</div>
+		<button type="button" class="btn btn-primary col-md-1" id="openChildWindow">打开</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcOpenChildWindow = function(){
+ 			document.getElementById("openChildWindow").onclick = function(){
+ 				if(window.navigator.userAgent.indexOf("Chrome") !== -1){
+	 				var iWidth = 500;
+					var iHeight = 300;
+					var iTop = (window.screen.availHeight - 30 - iHeight) / 2;
+					var iLeft = (window.screen.availWidth - 10 - iWidth) / 2;
+					window.open("child.html", "弹出窗口", "width=" + iWidth + ", height=" + iHeight + ",top=" + iTop + ",left=" + iLeft + ",toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no,alwaysRaised=yes,depended=yes");
+    				// if(document.getElementById("returnText").value){
+    				// 	alert(document.getElementById("returnText").value);
+    				// }
+    				//chrome传值遇到了问题	
+ 				}else{
+ 					var returnV = window.showModalDialog("child.html");//不支持chrome，只支持IE 4+ FF13 sa5.1
+ 					if(returnV){
+	 					alert(returnV);
+	 				}
+ 				}
+ 				
+ 			}
+ 		};
+ 		addLoadEvent(funcOpenChildWindow);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">刷新iframe窗口</p>
+	<div class="container">
+		<div class="row">
+			<button type="button" class="btn btn-primary col-md-1" id="updateIframeBtn">刷新</button>
+		</div>
+		<div class="row">
+			 <iframe src="child.html" height=300 id="updateIframe"></iframe>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcUpdateIframe = function(){
+ 			document.getElementById("updateIframeBtn").onclick = function(){
+ 				updateIframe.src = updateIframe.src;
+ 			}
+ 		};
+ 		addLoadEvent(funcUpdateIframe);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">刷新当前页面</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="updatePage">刷新</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcUpdatePage = function(){
+ 			var updatePage = document.getElementById("updatePage");
+ 			updatePage.onclick = function(){
+ 				window.location.reload(); //第一种方式
+ 				// window.location.href = window.location.href; //第二种方式
+ 				// window.location.replace(window.location.href); //第三种方式
+ 			}
+ 		};
+ 		addLoadEvent(funcUpdatePage);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">不弹出提示框关闭父窗口</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="windowFullScreen">全屏</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcFullScreen = function(){
+ 			document.getElementById("windowFullScreen").onclick = function(){
+ 				var win = window.open("child.html","_blank","resizable=yes;status=yes;toolbar=no;location=no;menubar=no;directories=no;scrollbars=no;");
+ 				win.moveTo(0,0);
+ 				win.resizeTo(screen.availWidth,screen.availHeight);
+ 			}
+ 		};
+ 		addLoadEvent(funcFullScreen);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">屏蔽右键</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="shieldingRight">屏蔽</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcShieldingRight = function(){
+ 			var shieldingRight = document.getElementById("shieldingRight");
+ 			shieldingRight.onclick = function(){
+ 				if(shieldingRight.innerText == "已屏蔽"){
+ 					return ;
+ 				}
+ 				document.getElementById("shieldingRight").innerText = "已屏蔽";
+ 				document.oncontextmenu = function(){
+ 					alert('禁止右键');
+ 					return false;
+ 				}
+ 			}
+ 		};
+ 		addLoadEvent(funcShieldingRight);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">网页防止另存为</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="banOnPage">禁止另存</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcBanOnPage = function(){
+ 			var _win = window.open("","","");
+ 			_win.opener = null;
+ 			_win.document.write('<html><head><meta http-equiv="Content-Type" content="text/html;charset=utf-8"><title>禁止另存</title></head><body>禁止另存<nosctipt><iframe src="*.html"></iframe></noscript></body></html>');
+ 		};
+ 		addLoadEvent(funcBanOnPage);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

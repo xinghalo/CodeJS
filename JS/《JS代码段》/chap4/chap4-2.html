@@ -1,0 +1,330 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"> -->
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">表格内容拖拽效果(待调试)</p>
+			<table id="tableDraw" >
+				<tr>
+					<td><div class="draw" id="tableDrawContent">被拖拽的内容</div></td>
+					<td>等待被拖入的元素</td>
+				</tr>
+				<tr>
+					<td>等待被拖入的元素</td>
+					<td>等待被拖入的元素</td>
+				</tr>
+			</table>
+	<style type="text/css">
+		td{
+			border: 1px solid #ccc;
+			height: 50px;
+			text-align: center;
+			font-size: 12px;
+			padding: 2px;
+		}
+	</style>
+	<script type="text/javascript">
+ 		var funcTableDraw = function(){//将所有对象的拖拽放到一个函数内
+ 			var bodyEvents = function(){
+ 				document.body.onmousemove = function(e){
+ 					bodyTableDrawmove(e);
+ 				}
+ 				document.body.onmouseup = function(e){
+ 					bodyTableDrawmouseup(e);
+ 				}
+ 			};
+ 			var getAbsoluteLeft = function(_e){
+ 				var _left = _e.offsetLeft;
+ 				var _current = _e.offsetParent;
+ 				while(_current !== null){
+ 					_left += _current.offsetLeft;
+ 					_current = _current.offsetParent;
+ 				}
+ 				return _left;
+ 			};
+ 			var getAbsoluteTop = function(_e){
+ 				var _top = _e.offsetTop;
+ 				var _current = _e.offsetParent;
+ 				while(_current !== null){
+ 					_top += _current.offsetTop;
+ 					_current = _current.offsetParent;
+ 				}
+ 				return _top;
+ 			};
+ 			var setCss = function(_this,cssOption){
+ 				if(!_this || _this.nodeType === 3 || _this.nodeType === 8 || !_this.style){
+ 					return;
+ 				}
+ 				for(var cs in cssOption){
+ 					_this.style[cs] = cssOption[cs];
+ 				}
+ 				return _this;
+ 			};
+ 			var pointCheck = function(_event,_e,options){//碰撞检测
+ 				var _pos = getMousePoint(_event);
+ 				var _w = options && options.width || _e.offsetWidth;
+ 				var _h = options && options.height || _e.offsetHeight;
+ 				var _left = getAbsoluteLeft(_e);
+ 				var _top = getAbsoluteTop(_e);
+ 				_pos.left += options && options.left || 0;
+ 				if(_pos.left<(_left+_w) && _left<_pos.left && _pos.top>_top && _pos.top<(_top+_h)){
+ 					return true;
+ 				}
+ 				return false;
+ 			};
+ 			var _mousepos = {
+ 				"top":0,
+ 				"left":0
+ 			};
+ 			var getMousePoint = function(_e){
+ 				var _body = document.body;
+ 				var _left = 0;
+ 				var _top = 0;
+ 				if(typeof window.pageYOffset != 'undefined'){
+ 					_left = window.pageXOffset;
+ 					_top = window.pageYOffset;
+ 				}else if(typeof document.compatMode != 'undefined' && document.compatMode !='BackCompat'){
+ 					_left = document.documentElement.scrollLeft;
+ 					_top = document.documentElement.scrollTop;
+ 				}else if(typeof _body != 'undefined'){
+ 					_left = _body.scrollLeft;
+ 					_top = _body.scrollTop;
+ 				}
+ 				_left += _e.clientX;
+ 				_top += _e.clientY;
+
+ 				_mousepos.left = _left;
+ 				_mousepos.top = _top;
+
+ 				return _mousepos;
+ 			};
+ 			var drawContent = null;
+ 			var drawing = false;
+ 			var startDrawTd = null;//鼠标按下的那个列
+ 			var drawTd = null;
+ 			var startDrawPos = {
+ 				"left":0,
+ 				"top":0
+ 			};
+ 			var drawTds = [];
+ 			var drawTdsLen = 0;
+ 			var tableDraw = function(table,tableDrawContent){
+ 				//先把所有的列放到一个drawTds数组里面
+ 				drawContent = tableDrawContent;
+ 				var r = table.rows;
+ 				var rl = r.length;
+ 				var c = [];
+ 				var cl = 0;
+ 				var l = 0;
+ 				for(var i=0; i<rl; i++){
+ 					c = r[i].cells;
+ 					cl = c.length;
+ 					l = 0;
+ 					for(;l<cl;l++){
+ 						drawTds.push(c[l]);
+ 					}
+ 				}
+ 				//此时drawTds包括了所有的列信息
+ 				drawTdsLen = drawTds.length;
+ 				tableDrawing();
+ 			};
+ 			var openTableDraw = function(event){
+ 				event = event || window.event;
+ 				var _pos = getMousePoint(event);
+ 				drawing = true;
+ 				startDrawPos = {
+ 					"left":_pos.left-getAbsoluteLeft(drawContent),
+ 					"top":_pos.top-getAbsoluteTop(drawContent)
+ 				}
+ 			};
+ 			var closeTableDraw = function(){
+ 				drawing = false;
+ 				setCss(drawContent,{
+ 					"left":"0px",
+ 					"top":"0px",
+ 					"position":"static"
+ 				});
+ 				drawTd.style.backgroundColor = "#fff";
+ 			};
+ 			var tableDrawing = function(){
+ 				drawContent.onmousedown = function(e){
+ 					startDrawTd = this.parentNode;
+ 					openTableDraw(e);
+ 				}
+ 			};
+ 			var bodyTableDrawmoveTd = function(event){
+ 				var i = 0;
+ 				var _drawTdsl = null;
+ 				for(;i<drawTdsLen;i++){
+ 					_drawTdsl = drawTds[i];
+ 					if(pointCheck(event,_drawTdsl)){
+ 						if(drawing){
+ 							drawTd = _drawTdsl;
+ 						}
+ 					}else{
+ 						_drawTdsl.style.backgroundColor = "#fff";
+ 					}
+ 				}
+ 				drawTd.style.backgroundColor = "#E7AB83";
+ 			};
+ 			var bodyTableDrawmove = function(event){
+ 				event = event || window.event;
+ 				var _pos = getMousePoint(event);
+ 				if(!drawContent || !drawing) return false;
+ 				bodyTableDrawmoveTd(event);
+ 				setCss(drawContent,{
+ 					"left":(_pos.left-startDrawPos.left)+"px",
+ 					"top":(_pos.top-startDrawPos.top)+"px"
+ 				});
+ 				if(drawContent.style.position != "absolute"){
+ 					drawContent.style.position = "absolute";
+ 				}
+ 			};
+ 			var bodyTableDrawmouseup = function(){
+ 				if(!drawContent || !drawTd || !drawing) return false;
+ 				drawTd.innerHTML = "";
+ 				drawTd.appendChild(drawContent);
+ 				var _html = startDrawTd.innerHTML;
+ 				if(_html.search("等待被拖入的元素")==-1 && _html.search("被拖拽的内容")==-1){
+ 					startDrawTd.innerHTML = "等待被拖入的元素";
+ 				}
+ 				closeTableDraw();
+ 			};
+ 			tableDraw(document.getElementById("tableDraw"),document.getElementById("tableDrawContent"));
+ 			bodyEvents();
+ 		};
+ 		addLoadEvent(funcTableDraw);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">表格分页</p>
+	<table id="tablePaging" border="1">
+		<tr>
+			<td>第一页内容</td>
+			<td>第一页内容</td>
+		</tr>
+		<tr>
+			<td>第一页内容</td>
+			<td>第一页内容</td>
+		</tr>
+	</table>
+	<p class="paging">
+		总页数<span id="allPage">1</span>
+		当前页<span id="currentPage">1</span>
+		<input value="上一页" id="prevPaging" type="button">
+		<input value="下一页" id="nextPaging" type="button">
+	</p>
+	<script type="text/javascript">
+ 		var funcTablePaging = function(){
+ 			var trAct = function(table,num,tr){
+ 				if(!tr){
+ 					var _num = table.rows[num];
+ 					if(_num){
+ 						table.deleteRow(_num);
+ 						return true;
+ 					}else{
+ 						return false;
+ 					}
+ 				}else{
+ 					var r = table.insertRow(num);
+ 					var l = tr.length;
+ 					for(var i=0; i<l; i++){
+ 						r.insertCell(i).innerHTML = tr[i];
+ 					}
+ 					return true;
+ 				}
+ 			};
+ 			var currentPage = 1;
+ 			var table = null;
+ 			var currentPageUi = null;
+ 			var allPage = null;
+ 			var updateUi = function(){//通过pageData和currentpage和allpages刷新页面
+ 				tableUi();
+ 				currentPageUi.innerHTML = currentPage;
+ 				allPage.innerHTML = allPages;
+ 			};
+ 			var getPageData = function(){
+ 				return [
+ 					[
+ 						"第"+currentPage+"页内容",
+ 						"第"+currentPage+"页内容"
+ 					],[
+ 						"第"+currentPage+"页内容",
+ 						"第"+currentPage+"页内容"
+ 					]
+ 				];
+ 			};
+ 			var allPages = 5;
+ 			var tablePaging = function(args){
+ 				table = args.tablePaging;
+ 				currentPageUi = args.currentPage;
+ 				allPage = args.allPage;
+ 				nextPaging(args.nextPaging);
+ 				prevPaging(args.prevPaging);
+ 				updateUi();
+ 			};
+ 			var nextPaging = function(e){
+ 				e.onclick = function(){
+ 					currentPage++;
+ 					if(currentPage > allPages){
+ 						currentPage = allPages;
+ 						return ;
+ 					}
+ 					updateUi();
+ 				}
+ 			};
+ 			var prevPaging = function(e){
+ 				e.onclick = function(){
+ 					currentPage--;
+ 					if(currentPage<1){
+ 						currentPage = 1;
+ 						return ;
+ 					}
+ 					updateUi();
+ 				}
+ 			};
+ 			var tableUi = function(){//删除表格中的所有元素，重新建立
+ 				var d = getPageData();
+ 				var _datal = null;
+ 				var l = d.length;
+ 				for(var i=0;i<l;i++){//删除数据
+ 					trAct(table,0);
+ 				}
+ 				for(var i=0;i<l;i++){//新建数据
+ 					_datal = d[i];
+ 					trAct(table,0,[
+ 						_datal[0],_datal[1]
+ 						]);
+ 				}
+ 			};
+ 			tablePaging({
+ 				"tablePaging":document.getElementById("tablePaging"),
+ 				"currentPage":document.getElementById("currentPage"),
+ 				"allPage":document.getElementById("allPage"),
+ 				"nextPaging":document.getElementById("nextPaging"),
+ 				"prevPaging":document.getElementById("prevPaging")
+ 			});
+ 		};
+ 		addLoadEvent(funcTablePaging);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

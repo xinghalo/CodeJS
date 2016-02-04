@@ -1,0 +1,29 @@
+<html>
+<body>
+	<script type="text/javascript">
+	var n = [4,8,15,16,23,42];
+	n.sort();
+	console.log(n);
+
+	var n1 = [4,8,15,16,23,42];
+	n1.sort(function(a,b){
+		return a-b;
+	});
+	console.log(n1);
+
+	var m = ['aa','bb','a',4,8,15,16,23,42];
+	m.sort(function(a,b){
+		if(a === b) {
+			return 0;
+		}
+		if(typeof a ==== typeof b){
+			return a < b ? -1 : 1;
+		}
+		return typeof a < typeof b ? -1 : 1;
+	});
+	console.log(m);
+
+
+	</script>
+</body>
+</html>

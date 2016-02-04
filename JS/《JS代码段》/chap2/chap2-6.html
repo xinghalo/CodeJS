@@ -1,0 +1,140 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">光标位置</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="cursorPos" value="光标在最后">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var funcCursorPos = function(){
+			var cursorPos = document.getElementById("cursorPos");
+			cursorPos.onclick = cursorPos.onkeyup = function(){
+				var _vLen = this.value.length;
+				if(this.setSelectionRange){
+					this.setSelectionRange(_vLen,_vLen);
+				}else{
+					var a = this.createTextRange();
+					a.moveStart('character',_vLen);
+					a.collapse(true);
+					a.select();
+				}
+			};
+
+		};
+		addLoadEvent(funcCursorPos);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">禁止文本框的记忆功能</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" autocomplete="off" placeholder="利用html中的autocomplete属性为off关闭自动记忆">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="banAutoComplete" placeholder="利用JS设置autocomplete属性">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var funcBanAutoComplete = function(){
+			document.getElementById("banAutoComplete").setAttribute("autocomplete","off");
+		};
+		addLoadEvent(funcBanAutoComplete);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">自动选定文本内容</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<textarea class="form-control" rows="5" id="autoSelected">
+				《静夜思》
+				床前明月光，
+				疑似地上霜。
+				举头望明月，
+				低头吃脚丫。
+			</textarea>
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var funcAutoSelected = function(){
+			document.getElementById("autoSelected").select();
+		};
+		addLoadEvent(funcAutoSelected);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">获取和失去焦点时，改变样式</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" id="autoUpdateCss" data-fClass="fboder" data-bClass="bboder" data-fCss="{'color':'red'}" data-bCss="{'color':'green'}" value="修改样式">
+		</div>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+		var funcAutoUpdateCss = function(){
+			var strToJson = function(str){
+				return typeof JSON == "object"?(new Function("return"+str))():JSON.parse(str);
+			};
+			var setCSS = function(_this,cssOption){
+				if(!_this || _this.nodeType === 3 || _this.nodeType === 8 || !_this.style){
+					return;
+				}
+				for(var cs in cssOption){
+					_this.style[cs] = cssOption[cs];
+				}
+				return _this;
+			};
+			var autoUpdateCss = document.getElementById("autoUpdateCss");
+			var fCss = autoUpdateCss.getAttribute("data-fCss");
+			var fClass = autoUpdateCss.getAttribute("data-fClass");
+			var bCss = autoUpdateCss.getAttribute("data-bCss");
+			var bClass = autoUpdateCss.getAttribute("data-bClass");
+			
+			autoUpdateCss.onfocus = function(){
+				fCss && setCSS(this,strToJson(fCss));
+				fClass && (this.className = fClass);
+			};
+			autoUpdateCss.onblur = function(){
+				bCss && setCSS(this,strToJson(bCss));
+				bClass && (this.className = bClass);
+			};
+		};
+		addLoadEvent(funcAutoUpdateCss);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>

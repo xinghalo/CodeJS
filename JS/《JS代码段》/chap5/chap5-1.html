@@ -1,0 +1,87 @@
+<!doctype html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<script type="text/javascript">
+		function addLoadEvent(func){
+                var oldonload = window.onload;
+                if(typeof window.onload != 'function'){
+                    window.onload = func;
+                }else{
+                    window.onload = function(){
+                        oldonload();
+                        func();
+                    }
+                }
+            }
+	</script>
+</head>
+<body>
+	<!-- **************************************************************************** -->
+	<p class="h3">打开新页面</p>
+	<div class="container">
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="openNewBtn" data-href="../template.html">打开新页面</button>
+	</div>
+	</div>
+	
+	<script type="text/javascript">
+ 		var funcOpenNewWindow = function(){
+ 			var openNewBtn = document.getElementById("openNewBtn");
+ 			// window.location.href="将要跳转的页面";
+ 				
+ 			// window.open("将要跳转的页面");
+ 			// window.history.back(-1)；
+
+ 			// window.location.replace("将要跳转的页面");
+
+ 			//<META HTTP-EQUIV="Refresh" CONTENT="0;URL='将要跳转的页面'">
+ 			
+ 			openNewBtn.onclick = function(){
+ 				// window.location.href = this.getAttribute("data-href");在原来的窗口打开
+ 				window.open(this.getAttribute("data-href")); //新打开一个窗口
+ 			}
+ 		};
+ 		addLoadEvent(funcOpenNewWindow);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+	<p class="h3">打开指定大小的窗口</p>
+	<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			高度：<input type="text" class="form-control" id="windowHeight">
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			宽度：<input type="text" class="form-control" id="windowWidth">
+		</div>
+	</div>
+	<br />
+	<div class="row">
+		<button type="button" class="btn btn-primary col-md-1" id="openWindow" data-href="../template.html">打开</button>
+	</div>
+	</div>
+	<script type="text/javascript">
+ 		var funcOpenWindow = function(){
+ 			var openWindow = function(width,height,href){
+ 				width = width || "";
+ 				height = height || "";
+ 				//open(跳转的页面url，新窗口的名称，设置窗口特性，设定窗口显示的URL)
+ 				window.open(href,"","width="+width+",height="+height);
+ 			};
+ 			document.getElementById("openWindow").onclick = function(){
+ 				openWindow(document.getElementById("windowWidth").value,
+ 					document.getElementById("windowHeight").value,
+ 					document.getElementById("openWindow").getAttribute("data-href"));
+ 			};
+ 		};
+ 		addLoadEvent(funcOpenWindow);
+	</script>
+	<hr>
+	<!-- **************************************************************************** -->
+</script>
+</body>
+</html>
