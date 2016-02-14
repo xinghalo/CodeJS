@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+
+	table .cal {
+		border-collapse: separate;
+		border-spacing: 0;
+		text-align: center;
+		color: #333;
+	}
+	.cal th, .cal td {
+		margin: 0;
+		padding: 0;
+	}
+
+	.cal caption {
+		font-size: 1.25em;
+		padding-top: 0.692em;
+		padding-bottom: 0.692em;
+		background-color: #d4dde6;
+	}
+
+	.cal caption [rel="prev"] {
+		float: left;
+		margin-left: 0.2em;
+	}
+	.cal caption [rel="next"] {
+		float: right;
+		margin-right: 0.2em;
+	}
+	.cal caption a:link,
+	.cal caption a:visited {
+		text-decoration: none;
+		color: #333;
+		padding: 0 0.2em;
+	}
+	.cal caption a:hover,
+	.cal caption a:active,
+	.cal caption a:focus {
+		background-color: #6d8ab7;
+	}
+
+	.cal thead th {
+		background-color: #d4dde6;
+		border-bottom: 1px solid #a9bacb;
+		font-size: 0.875em;
+	}
+
+	.cal tbody {
+		color: #a4a4a4;
+		text-shadow: 1px 1px 1px white;
+		background-color: #d0d9e2;
+	}
+	.cal tbody td {
+		border-top: 1px solid #e0e0e1;
+		border-right: 1px solid #9f9fa1;
+		border-bottom: 1px solid #acacad;
+		border-left: 1px solid #dfdfe0;
+	}
+	.cal tbody a {
+		display: block;
+		text-decoration: none;
+		color: #333;
+		background-color: #c0c8d2;
+		font-weight: bold;
+		padding: 0.385em 0.692em 0.308em 0.692em;
+	}
+
+	.cal tbody a:hover,
+	.cal tbody a:focus,
+	.cal tbody a:active,
+	.cal tbody .selected a:link,
+	.cal tbody .selected a:visited,
+	.cal tbody .selected a:hover,
+	.cal tbody .selected a:focus,
+	.cal tbody .selected a:active {
+		background-color: #6d8ab7;
+		color: white;
+		text-shadow: 1px 1px 2px #22456b;
+	}
+
+	.cal tbody td:hover,
+	.cal tbody td.selected {
+		border-top: 1px solid #2a3657;
+		border-right: 1px solid #465977;
+		border-bottom: 1px solid #576e92;
+		border-left: 1px solid #466080;
+	}
+	</style>
+</head>
+<body>
+<table class="cal" summary="A Calendar style date picker">
+	<caption>
+		<a href="#" rel="prev">&lt;</a>January 2016<a href="#" rel="next">&gt;</a>
+	</caption>
+	<colgroup>
+		<col id="sun"></col>
+		<col id="mon"></col>
+		<col id="tue"></col>
+		<col id="wed"></col>
+		<col id="thur"></col>
+		<col id="fri"></col>
+		<col id="sat"></col>
+	</colgroup>
+	<thead>
+		<tr>
+			<th scope="col">Sun</th>
+			<th scope="col">Mon</th>
+			<th scope="col">Tue</th>
+			<th scope="col">Wed</th>
+			<th scope="col">Tur</th>
+			<th scope="col">Fri</th>
+			<th scope="col">Sat</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td class="null">30</td>
+			<td class="null">31</td>
+			<td><a href="#">1</a></td>
+			<td><a href="#">2</a></td>
+			<td><a href="#">3</a></td>
+			<td><a href="#">4</a></td>
+			<td><a href="#">5</a></td>
+		</tr>
+		<tr>
+			<td><a href="#">6</a></td>
+			<td><a href="#">7</a></td>
+			<td><a href="#">8</a></td>
+			<td><a href="#">9</a></td>
+			<td><a href="#">10</a></td>
+			<td><a href="#">11</a></td>
+			<td><a href="#">12</a></td>
+		</tr>
+		<tr>
+			<td><a href="#">13</a></td>
+			<td><a href="#">14</a></td>
+			<td><a href="#">15</a></td>
+			<td><a href="#">16</a></td>
+			<td><a href="#">17</a></td>
+			<td><a href="#">18</a></td>
+			<td><a href="#">19</a></td>
+		</tr>
+		<tr>
+			<td><a href="#">20</a></td>
+			<td><a href="#">21</a></td>
+			<td><a href="#">22</a></td>
+			<td><a href="#">23</a></td>
+			<td><a href="#">24</a></td>
+			<td><a href="#">25</a></td>
+			<td><a href="#">26</a></td>
+		</tr>
+		<tr>
+			<td><a href="#">27</a></td>
+			<td><a href="#">28</a></td>
+			<td><a href="#">29</a></td>
+			<td><a href="#">30</a></td>
+			<td><a href="#">31</a></td>
+			<td class="null">1</td>
+			<td class="null">2</td>
+		</tr>
+	</tbody>
+</table>
+</body>
+</html>

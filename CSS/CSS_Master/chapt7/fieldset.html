@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+	fieldset {
+		margin: 1em 0;
+		padding: 1em;
+		border: 1px solid #ccc;
+		background: #f8f8f8;
+	}
+	legend {
+		font-weight: bold;
+	}
+	/*label {
+		display: block;
+		cursor: pointer;
+	}*/
+	label {
+		float: left;
+		width: 10em;
+		cursor: pointer;
+	}
+	div {
+		clear: left;
+	}
+
+	input[type="text"] {
+		width: 20em;
+	}
+	textarea {
+		width: 100%;
+		height: 10em;
+	}
+
+	input.radio,
+	input.checkbox,
+	input.submit {
+		width: auto;
+	}
+
+	#remember-me .radio {
+		margin-right: 1em;
+	}
+
+	textarea:focus {
+		background-color: #ffc;
+	}
+	textarea {
+		border-top: 2px solid #999;
+		border-left: 2px solid #999;
+		border-bottom: 1px solid #ccc;
+		border-right: 1px solid #ccc;
+	}
+
+	.required {
+		font-size: 0.75em;
+		color: #760000;
+	}
+
+	fieldset#favoriteColor {
+		margin: 0;
+		padding: 0;
+		border: none;
+		background: transparent;
+	}
+	#favoriteColor h2 {
+		width: 10em;
+		float: left;
+		font-size: 1em;
+		font-weight: normal;
+	}
+	#favoriteColor .col {
+		width: 8em;
+		float: left;
+		clear: none;
+	}
+	/*#favoriteColor label {
+		float: none;
+	}*/
+
+	button.two {
+		width: 200px;
+		height: 50px;
+		border: 1px solid #989898;
+		-moz-border-radius: 6px;
+		-webkit-border-radius: 6px;
+		border-radius: 6px;
+		-moz-box-shadow: 2px 2px 2px #ccc;
+		-webkit-box-shadow: 2px 2px 2px #ccc;
+		box-shadow: 2px 2px 2px #ccc;
+		color: #fff;
+		font-size: 26px;
+		font-weight: bold;
+		text-shadow: 1px 1px 1px #666;
+	}
+
+	form div {
+		position: relative;
+	}
+	form .feedback {
+		position: absolute;
+		left: 30em;
+		right: 0;
+		top: 0.5em;
+	}
+	</style>
+</head>
+<body>
+<form>
+<fieldset>
+	<legend>Your Contact Details</legend>
+	<div>
+		<label for="author">Name:</label>
+		<em class="required">(required)</em>
+		<input name="author" id="author" type="text" />
+	</div>
+	<div>
+		<label for="email">Email Address:</label>
+		<em class="feedback">Incorrect email address. Please try again.</em>
+		<input name="email" id="email" type="text" />
+	</div>
+	<div>
+		<label for="url">Web Address:</label>
+		<input name="url" id="url" type="text" />
+	</div>
+</fieldset>
+
+<fieldset>
+	<legend>Comments</legend>
+	<div>
+		<label for="text">Message:</label>
+		<textarea name="text" id="text"></textarea>
+	</div>
+</fieldset>
+
+<fieldset id="remember-me">
+	<legend>Remember Me</legend>
+	<div>
+		<label for="remember-yes">
+			<input id="remember-yes" class="radio" name="remember" type="radio" value="yes"/>Yes
+		</label>
+	</div>
+	<div>
+		<label for="remember-no">
+			<input id="remember-no" class="radio" name="remember" type="radio" value="no"/>No
+		</label>
+	</div>
+</fieldset>
+
+<fieldset id="favoriteColor">
+	<h2>Favorite Color:</h2>	
+	<div class="col">
+		<div>
+			<label><input class="checkbox" id="red" name="red" type="checkbox" value="red"/>red</label>
+			<label><input class="checkbox" id="red" name="red" type="checkbox" value="red"/>yellow</label>
+			<label><input class="checkbox" id="red" name="red" type="checkbox" value="red"/>black</label>
+		</div>
+	</div>
+	<div class="col">
+		<div>
+			<label><input class="checkbox" id="red" name="red" type="checkbox" value="red"/>green</label>
+			<label><input class="checkbox" id="red" name="red" type="checkbox" value="red"/>blue</label>
+			<label><input class="checkbox" id="red" name="red" type="checkbox" value="red"/>pink</label>
+		</div>
+	</div>
+</fieldset>
+<p>
+	<button type="submit" class="two">Book Now</button>
+</p>
+</form>
+</body>
+</html>
