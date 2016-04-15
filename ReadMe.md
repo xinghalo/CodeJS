@@ -28,6 +28,14 @@
 
 ------
 
+## requirejs篇
+
+本部分主要介绍常用的require的使用和样例代码
+
+
+
+------
+
 作者 [@xingoo](http://www.cnblogs.com/xing901022/)     
 2016 年 01月 22日    
 
