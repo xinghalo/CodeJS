@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		ol.pagination {
+			margin: 0;
+			padding: 0;
+			list-style-type: none; 
+		}
+		/*水平布局*/
+		ol.pagination li {
+			float: left;
+			margin-right: 0.6em;
+		}
+		/*为每个元素添加边框*/
+		ol.pagination a,
+		ol.pagination li.selected {
+			display: block;
+			padding: 0.2em 0.5em;
+			border: 1px solid #ccc;
+			text-decoration: none;
+		}
+		/*当选中时高亮*/
+		ol.pagination a:hover,
+		ol.pagination a:focus,
+		ol.pagination li.selected {
+			background-color: blue;
+			color: white;
+		}
+		/*添加箭头*/
+		ol.pagination a[rel="prev"]:before {
+			content:"\00AB";
+			padding-right: 0.5em;
+		}
+		ol.pagination a[rel="next"]:after {
+			content: "\00BB";
+			padding-left: 0.5em;
+		}
+	</style>
+</head>
+<body>
+	<ol class="pagination">
+		<li><a href="" rel="prev">Prev</a></li>
+		<li><a href="">1</a></li>
+		<li><a href="" class="selected">2</a></li>
+		<li><a href="">3</a></li>
+		<li><a href="">4</a></li>
+		<li><a href="">5</a></li>
+		<li><a href="" rel="next">Next</a></li>
+	</ol>
+</div>
+</body>
+</html>

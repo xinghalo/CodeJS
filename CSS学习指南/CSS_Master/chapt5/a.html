@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		a:link, a:visited {
+			text-decoration: none;
+			border-bottom: 1px dotted #000;
+		}
+		a:hover, a:focus, a:active {
+			border-bottom-style: solid; 
+		}
+		.external {
+			background: url(external.png) no-repeat right top;
+			padding-right: 18px;
+		}
+		/*匹配以http://开头的链接*/
+		a[href^="http://"] {
+			background: url(external.png) no-repeat right top;
+			padding-right: 18px;
+		}
+		/*匹配以pdf结尾的链接*/
+		a[href$=".pdf"] {
+			background: url(external.png) no-repeat right top;
+			padding-right: 18px;	
+		}
+	</style>
+</head>
+<body>
+	<a href="#a" name="top">到底部</a>
+	<a href="" class="external">链接到外部</a><!-- 引入另一种样式，不太友好 -->
+	<a href="http://www.baidu.com">链接到外部</a>
+	<div style="height:2000px"></div>
+	<a href="#top" name="a">到顶部</a>
+</body>
+</html>
